@@ -1,0 +1,87 @@
+# Default values for jobfactory.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: dwproductioncentralus.azurecr.io/job-factory
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "43"
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  grpcPort: 53334
+env:
+  AZURE_STORAGE_ACCOUNT: "dwlakeus"
+  AZURE_STORAGE_ACCESS_KEY: "zh8ja4GxMXENVYMs9zeR5bP67SH/nhvxC1A2ZUNKZ+9MQlQ6umoS4FyxTvdFHaueVFdFukEg7SJeLMMZMoMiBQ=="
+  HTTP_PORT: "3334"
+  GRPC_PORT: "53334"
+  MONGO_HOST: "mongodb"
+  MONGO_PORT: "27017"
+  MONGO_DB: "merit"
+  PULSAR_HOST: "pulsar:6650"
+  DASHBOARD_HOST: "meritdashboard"
+  OUTPUT_STORAGE: "/data/csv"
+  FILE_SHARE: "/data/files"
+  CACHE_STORAGE: "/data/cache"
+  OUTPUT_FACTORY_HOST: "http://outputfactory"
+  REDIS_HOST: "redis-master"
+  REDIS_PORT: "6379"
+  REDIS_EXPIRATION: "1440"
+  DATA_MANAGEMENT_SERVICE: "http://config-data-management"
+  CRUD_SERVICE: "config-data-management"
+  CRUD_PORT: "53001"
+  PULSAR_HOST: "pulsar://pulsar-proxy:6650"
+  ENV_STATUS: "prod"
+  JAEGER_SAMPLER_TYPE: const
+  JAEGER_SAMPLER_PARAM: 1
+  JAEGER_AGENT_HOST: jaeger-tracing-agent.monitoring.svc.cluster.local
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+labels:
+  contact: anish
+  workload: jobfactory
+  env: prod
+  tier: backend
+  project: dataworks
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+nodeSelector: {}
+tolerations: []
+affinity: {}

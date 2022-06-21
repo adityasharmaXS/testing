@@ -1,0 +1,130 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: "2021-06-26T06:54:43Z"
+  labels:
+    controller-uid: 4d88cc7d-405c-4307-99d1-e3786506f627
+    job-name: mongodb-backup-1610452800
+    velero.io/backup-name: dataworksns
+    velero.io/restore-name: dataworksns-20210626065414
+  name: mongodb-backup-1610452800
+  namespace: dataworks
+  resourceVersion: "202684"
+  uid: cebbbe72-dcdd-41e5-b8f8-b2aee5a1ad0b
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: cebbbe72-dcdd-41e5-b8f8-b2aee5a1ad0b
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: cebbbe72-dcdd-41e5-b8f8-b2aee5a1ad0b
+        job-name: mongodb-backup-1610452800
+    spec:
+      containers:
+      - args:
+        - -c
+        - mkdir -p /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M") && mongodump -h mongodb:27017  -o
+          /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M")
+        command:
+        - /bin/sh
+        image: mongo
+        imagePullPolicy: Always
+        name: mongodb-backup
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /mongobackup
+          name: mongodb-backup
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mongodb-backup
+        persistentVolumeClaim:
+          claimName: mongodb-backup
+status:
+  conditions:
+  - lastProbeTime: "2021-06-26T07:05:20Z"
+    lastTransitionTime: "2021-06-26T07:05:20Z"
+    message: Job has reached the specified backoff limit
+    reason: BackoffLimitExceeded
+    status: "True"
+    type: Failed
+  failed: 7
+  startTime: "2021-06-26T06:54:43Z"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: "2021-06-26T06:54:44Z"
+  labels:
+    controller-uid: 65e731e3-ec16-44a1-95bb-fb2baa2f14e5
+    job-name: postgres-backup-1613736000
+    velero.io/backup-name: dataworksns
+    velero.io/restore-name: dataworksns-20210626065414
+  name: postgres-backup-1613736000
+  namespace: dataworks
+  resourceVersion: "202768"
+  uid: 978a3434-6f99-41c8-b8d6-e540a155a598
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: 978a3434-6f99-41c8-b8d6-e540a155a598
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: 978a3434-6f99-41c8-b8d6-e540a155a598
+        job-name: postgres-backup-1613736000
+    spec:
+      containers:
+      - args:
+        - -c
+        - echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump -U
+          postgres -h postgres dataworks > /var/backups/backup-$(date +"%m-%d-%Y-%H-%M").sql
+        command:
+        - /bin/sh
+        env:
+        - name: PGPASS
+          valueFrom:
+            secretKeyRef:
+              key: pgpass
+              name: pgpass
+        image: postgres:11.8-alpine
+        imagePullPolicy: IfNotPresent
+        name: postgres-backup
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/backups
+          name: postgres-backup
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: postgres-backup
+        persistentVolumeClaim:
+          claimName: postgres-backup
+status:
+  conditions:
+  - lastProbeTime: "2021-06-26T07:05:37Z"
+    lastTransitionTime: "2021-06-26T07:05:37Z"
+    message: Job has reached the specified backoff limit
+    reason: BackoffLimitExceeded
+    status: "True"
+    type: Failed
+  failed: 7
+  startTime: "2021-06-26T06:54:45Z"

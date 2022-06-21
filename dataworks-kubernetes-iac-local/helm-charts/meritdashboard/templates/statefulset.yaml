@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "meritdashboard.fullname" . }}
+  labels:
+    {{- include "meritdashboard.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/contact: {{ .Values.labels.contact }}
+    app.kubernetes.io/workload: {{ .Values.labels.workload }}
+    app.kubernetes.io/env: {{ .Values.labels.env }}
+    app.kubernetes.io/tier: {{ .Values.labels.tier }}
+    app.kubernetes.io/project: {{ .Values.labels.project }}
+spec:
+  serviceName: meritdashboard
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "meritdashboard.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.Version }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/contact: {{ .Values.labels.contact }}
+      app.kubernetes.io/workload: {{ .Values.labels.workload }}
+      app.kubernetes.io/env: {{ .Values.labels.env }}
+      app.kubernetes.io/tier: {{ .Values.labels.tier }}
+      app.kubernetes.io/project: {{ .Values.labels.project }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "meritdashboard.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/contact: {{ .Values.labels.contact }}
+        app.kubernetes.io/workload: {{ .Values.labels.workload }}
+        app.kubernetes.io/env: {{ .Values.labels.env }}
+        app.kubernetes.io/tier: {{ .Values.labels.tier }}
+        app.kubernetes.io/project: {{ .Values.labels.project }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "meritdashboard.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: {{ .Values.env.PORT | quote }}
+            - name: MONGO_HOST
+              value: {{ .Values.env.MONGO_HOST | quote }}
+            - name: MONGO_PORT
+              value: {{ .Values.env.MONGO_PORT | quote }}
+            - name: MONGO_DB
+              value: {{ .Values.env.MONGO_DB | quote }}
+            - name: PROXIES_FILE
+              value: {{ .Values.env.PROXIES_FILE | quote }}
+            - name: DASHBOARD_HOST
+              value: {{ .Values.env.DASHBOARD_HOST | quote }}
+            - name: CASSANDRA_HOST
+              value: {{ .Values.env.CASSANDRA_HOST | quote }}
+            - name: CASSANDRA_KEYSPACE
+              value: {{ .Values.env.CASSANDRA_KEYSPACE | quote }}
+            - name: MAX_GOROUTINES
+              value: {{ .Values.env.MAX_GOROUTINES | quote }}
+            - name: PULSAR_HOST
+              value: {{ .Values.env.PULSAR_HOST | quote }}
+            - name: FILE_SHARE
+              value: {{ .Values.env.FILE_SHARE | quote }}
+            - name: WS_HOST
+              value: {{ .Values.env.WS_HOST | quote }}
+            - name: WS_SOCKET
+              value: {{ .Values.env.WS_SOCKET | quote }}
+            - name: JOBFACTORY_HOST
+              value: {{ .Values.env.JOBFACTORY_HOST | quote }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /data/files
+              name: {{ include "meritdashboard.fullname" . }}-pvc
+      # volumes:
+      # - name: meritdashboard-data
+      #   persistentVolumeClaim:
+      #     claimName: {{ include "meritdashboard.fullname" . }}-pvc
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "meritdashboard.fullname" . }}-pvc
+    spec:
+      accessModes:
+        - {{ .Values.persistence.accessMode | quote }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size | quote }}
+      storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

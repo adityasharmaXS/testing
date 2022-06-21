@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "jobfactory.fullname" . }}
+  labels:
+    {{- include "jobfactory.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/contact: {{ .Values.labels.contact }}
+    app.kubernetes.io/workload: {{ .Values.labels.workload }}
+    app.kubernetes.io/env: {{ .Values.labels.env }}
+    app.kubernetes.io/tier: {{ .Values.labels.tier }}
+    app.kubernetes.io/project: {{ .Values.labels.project }}
+spec:
+  serviceName: jobfactory
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "jobfactory.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.Version }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/contact: {{ .Values.labels.contact }}
+      app.kubernetes.io/workload: {{ .Values.labels.workload }}
+      app.kubernetes.io/env: {{ .Values.labels.env }}
+      app.kubernetes.io/tier: {{ .Values.labels.tier }}
+      app.kubernetes.io/project: {{ .Values.labels.project }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "jobfactory.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/contact: {{ .Values.labels.contact }}
+        app.kubernetes.io/workload: {{ .Values.labels.workload }}
+        app.kubernetes.io/env: {{ .Values.labels.env }}
+        app.kubernetes.io/tier: {{ .Values.labels.tier }}
+        app.kubernetes.io/project: {{ .Values.labels.project }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "jobfactory.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ENV_STATUS
+              value: {{ .Values.env.ENV_STATUS | quote }}
+            - name: HTTP_PORT
+              value: {{ .Values.env.HTTP_PORT | quote }}
+            - name: GRPC_PORT
+              value: {{ .Values.env.GRPC_PORT | quote }}
+            - name: MONGO_HOST
+              value: {{ .Values.env.MONGO_HOST | quote }}
+            - name: MONGO_PORT
+              value: {{ .Values.env.MONGO_PORT | quote }}
+            - name: MONGO_DB
+              value: {{ .Values.env.MONGO_DB | quote }}
+            - name: PULSAR_HOST
+              value: {{ .Values.env.PULSAR_HOST | quote }}
+            - name: DASHBOARD_HOST
+              value: {{ .Values.env.DASHBOARD_HOST | quote }}
+            - name: OUTPUT_STORAGE
+              value: {{ .Values.env.OUTPUT_STORAGE | quote }}
+            - name: FILE_SHARE
+              value: {{ .Values.env.FILE_SHARE | quote }}
+            - name: CACHE_STORAGE
+              value: {{ .Values.env.CACHE_STORAGE | quote }}
+            - name: OUTPUT_FACTORY_HOST
+              value: {{ .Values.env.OUTPUT_FACTORY_HOST | quote }}
+            - name: REDIS_HOST
+              value: {{ .Values.env.REDIS_HOST | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.env.REDIS_PORT | quote }}
+            - name: REDIS_EXPIRATION
+              value: {{ .Values.env.REDIS_EXPIRATION | quote }}
+            - name: DATA_MANAGEMENT_SERVICE
+              value: {{ .Values.env.DATA_MANAGEMENT_SERVICE | quote }}
+            - name: CRUD_SERVICE
+              value: {{ .Values.env.CRUD_SERVICE | quote }}
+            - name: CRUD_PORT
+              value: {{ .Values.env.CRUD_PORT | quote }}
+            - name: PULSAR_HOST
+              value: {{ .Values.env.PULSAR_HOST | quote }}
+            - name: JAEGER_SAMPLER_TYPE
+              value: {{ .Values.env.JAEGER_SAMPLER_TYPE | quote }}
+            - name: JAEGER_SAMPLER_PARAM
+              value: {{ .Values.env.JAEGER_SAMPLER_PARAM | quote }}
+            - name: JAEGER_AGENT_HOST
+              value: {{ .Values.env.JAEGER_AGENT_HOST | quote }}   
+            - name: AZURE_STORAGE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  key: AZURE_STORAGE_ACCOUNT
+                  name: {{ include "jobfactory.fullname" . }}-secret
+            - name: AZURE_STORAGE_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AZURE_STORAGE_ACCESS_KEY
+                  name: {{ include "jobfactory.fullname" . }}-secret
+          ports:
+            - name: http
+              containerPort: 3334
+              protocol: TCP
+            - name: grpcport
+              containerPort: 53334
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - mountPath: /data
+            name: data
+      volumes:
+      - azureFile:
+          secretName: dwk8sdatastorage-secret
+          shareName: data
+        name: data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

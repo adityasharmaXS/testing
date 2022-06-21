@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stats-service.fullname" . }}
+  labels:
+    {{- include "stats-service.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/contact: {{ .Values.labels.contact }}
+    app.kubernetes.io/workload: {{ .Values.labels.workload }}
+    app.kubernetes.io/env: {{ .Values.labels.env }}
+    app.kubernetes.io/tier: {{ .Values.labels.tier }}
+    app.kubernetes.io/project: {{ .Values.labels.project }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "stats-service.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.Version }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/contact: {{ .Values.labels.contact }}
+      app.kubernetes.io/workload: {{ .Values.labels.workload }}
+      app.kubernetes.io/env: {{ .Values.labels.env }}
+      app.kubernetes.io/tier: {{ .Values.labels.tier }}
+      app.kubernetes.io/project: {{ .Values.labels.project }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "stats-service.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/contact: {{ .Values.labels.contact }}
+        app.kubernetes.io/workload: {{ .Values.labels.workload }}
+        app.kubernetes.io/env: {{ .Values.labels.env }}
+        app.kubernetes.io/tier: {{ .Values.labels.tier }}
+        app.kubernetes.io/project: {{ .Values.labels.project }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "stats-service.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ENV_STATUS
+              value: {{ .Values.env.ENV_STATUS | quote }}
+            - name: REDIS_HOST
+              value: {{ .Values.env.REDIS_HOST | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.env.REDIS_PORT | quote }}
+            - name: CRUD_SERVICE
+              value: {{ .Values.env.CRUD_SERVICE | quote }}
+            - name: CRUD_PORT
+              value: {{ .Values.env.CRUD_PORT | quote }}
+            - name: PULSAR_HOST
+              value: {{ .Values.env.PULSAR_HOST | quote }}
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

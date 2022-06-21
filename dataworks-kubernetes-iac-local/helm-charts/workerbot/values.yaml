@@ -1,0 +1,84 @@
+# Default values for workerbot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 20
+image:
+  repository: dwproductioncentralus.azurecr.io/workerbot-v2
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 111
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+env:
+  HTTP_PORT: "3006"
+  PROXIES_FILE: "app/proxies.txt"
+  DASHBOARD_HOST: "http://config-data-management/v2"
+  CASSANDRA_HOST: "cassandra"
+  CASSANDRA_KEYSPACE: "dataworks"
+  MAX_GOROUTINES: "10"
+  PULSAR_HOST: "pulsar://pulsar-proxy:6650"
+  CAPTCHA_SERVICE: "captcha-solver"
+  CAPTCHA_PORT: "80"
+  REDIS_HOST: "redis-master"
+  REDIS_PORT: "6379"
+  CACHE_STORAGE: "/data/cache"
+  AZURE_STORAGE_ACCOUNT: "dwlakeus"
+  AZURE_STORAGE_ACCESS_KEY: "zh8ja4GxMXENVYMs9zeR5bP67SH/nhvxC1A2ZUNKZ+9MQlQ6umoS4FyxTvdFHaueVFdFukEg7SJeLMMZMoMiBQ=="
+  ENV_STATUS: "prod"
+  JAEGER_SAMPLER_TYPE: const
+  JAEGER_SAMPLER_PARAM: 1
+  JAEGER_AGENT_HOST: jaeger-tracing-agent.monitoring.svc.cluster.local
+autoscaling:
+  enabled: false
+  minReplicas: 20
+  maxReplicas: 25
+  targetCPUUtilizationPercentage: 250
+  targetMemoryUtilizationPercentage: 150
+labels:
+  contact: anish
+  workload: workerbot
+  env: prod
+  tier: backend
+  project: dataworks
+nodeSelector: {}
+tolerations:
+  - key: "name"
+    operator: "Equal"
+    value: "workerbots"
+    effect: "NoExecute"
+affinity: {}

@@ -1,0 +1,12 @@
+apiVersion: v1
+appVersion: 2.7.0
+description: Apache Pulsar Helm chart for Kubernetes
+home: https://streamnative.io
+icon: http://pulsar.apache.org/img/pulsar.svg
+maintainers:
+- email: support@streamnative.io
+  name: StreamNative Support
+name: pulsar
+sources:
+- https://github.com/streamnative/charts/pulsar
+version: 2.7.0

@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-turn-on
+data:
+  turn-on.sh: |-
+    #!/bin/bash
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    mv kubectl /usr/local/bin/
+    JQ=/usr/bin/jq
+    curl https://stedolan.github.io/jq/download/linux64/jq > $JQ && chmod +x $JQ
+    ls -la $JQ
+    echo " "
+    #Namespace: scale-script
+    File1="deploy.txt"
+    File2="sts.txt"
+    #kubectl get deploy -n scale-script | grep -v 'scale\|stack\|eng\|crud'| awk 'NR>1{print $1}' > deploy.txt
+    #kubectl get sts -n scale-script | grep -v 'scale\|stack' | awk 'NR>1{print $1}' > sts.txt
+    kubectl get deploy -n scale-script | grep -v 'crud\|engine\|script\|test' | awk 'NR>1{print $1}' > deploy.txt
+    kubectl get sts -n scale-script | grep -v 'web' | awk 'NR>1{print $1}' > sts.txt
+    lines=$(cat $File1)
+    sts_lines=$(cat $File2)
+    echo " "
+    if [ -s "$File1" ]
+    then
+      for i in $lines
+      do
+        kubectl scale deploy $i --replicas=1 -n scale-script
+      done
+    else
+      echo "No deployment found"
+    fi
+    if [ -s "$File2" ]
+    then
+      for j in $sts_lines
+      do
+        kubectl scale sts $j --replicas=1 -n scale-script
+      done
+    else
+      echo "No sts found"
+    fi
+    echo " "
+    #Namespace: monitoring
+    File3="deploy-moni.txt"
+    File4="sts-moni.txt"
+    #kubectl get deploy -n monitoring | grep -v 'jae\|pro\|mon\|elast' | awk 'NR>1{print $1}' > deploy-moni.txt
+    #kubectl get sts -n monitoring | grep -v 'jae\|pro\|mon\|elast' | awk 'NR>1{print $1}' > sts-moni.txt
+    kubectl get deploy -n monitoring | grep -v 'test\|pro' | awk 'NR>1{print $1}' > deploy-moni.txt
+    kubectl get sts -n monitoring | grep -v 'web\|pro' | awk 'NR>1{print $1}' > sts-moni.txt
+    lines2=$(cat $File3)
+    sts_lines2=$(cat $File4)
+    if [ -s "$File4" ]
+    then
+      for j in $sts_lines2
+      do
+        kubectl scale sts $j --replicas=1 -n monitoring
+      done
+    else
+      echo "No sts found"
+    fi
+    while [[ $(kubectl get sts elasticsearch-master -n monitoring -ojson | $JQ '.status.readyReplicas') -ne 1 ]]
+    do
+      echo "Waiting for ElasticSearch to get ready..."
+      sleep 10
+    done
+    echo " "
+    if [ -s "$File3" ]
+    then
+      for i in $lines2
+      do
+        kubectl scale deploy $i --replicas=1 -n monitoring
+      done
+    else
+      echo "No deployment found"
+    fi
+    echo " "
+    #Namespace: dataworks-app
+    ### pulsar components
+    kubectl scale sts pulsar-zookeeper --replicas=3 -n dataworks-app
+    kubectl scale sts pulsar-toolset --replicas=1 -n dataworks-app
+    kubectl scale sts pulsar-bookie --replicas=3 -n dataworks-app
+    while [[ $(kubectl get sts pulsar-bookie -n dataworks-app -ojson | $JQ '.status.readyReplicas') -ne 3 ]]
+    do
+      echo "Waiting for Bookie to get ready..."
+      sleep 10
+    done
+    if [[ $(kubectl get sts pulsar-bookie -n dataworks-app -ojson | $JQ '.status.readyReplicas') -ge 3 ]]
+    then
+      kubectl scale sts pulsar-broker --replicas=3 -n dataworks-app
+    fi
+    while [[ $(kubectl get sts pulsar-broker -n dataworks-app -ojson | $JQ '.status.readyReplicas') -ne 3 ]]
+    do
+      echo "Waiting for Broker to get ready..."
+      sleep 10
+    done
+    if [[ $(kubectl get sts pulsar-broker -n dataworks-app -ojson | $JQ '.status.readyReplicas') -ge 3 ]]
+    then
+      kubectl scale sts pulsar-proxy --replicas=1 -n dataworks-app
+    fi
+    echo "Done broker"
+    while [[ $(kubectl get sts pulsar-proxy -n dataworks-app -ojson | $JQ '.status.readyReplicas') -ne 1 ]]
+    do
+      echo "Waiting for Proxy to get ready..."
+      sleep 5
+    done
+    kubectl scale sts pulsar-recovery --replicas=1 -n dataworks-app
+    #kubectl scale sts pf-public-default-backlog-router --replicas=1 -n dataworks-app
+    kubectl scale sts pulsar-pulsar-manager --replicas=1 -n dataworks-app
+    sleep 5
+    ### Other components
+    File5="deploy-dwa.txt"
+    File6="sts-dwa.txt"
+    #kubectl get deploy -n dataworks-app | grep -v 'captcha-solver\|centri-proxy\|centrifuge-centrifugo\|config-data-management\|dashboard-ui\|druid-druid-operator\|file-service\|indexingservice\|job-manager-v2\|mongodb\|outputfactory\|proxy-service\|scheduler-service\|slack-service\|sonarqube-sonarqube\|stats-service\|superset\|superset-worker\|testing-service\|workerbot\|ws-service' | awk 'NR>1{print $1}' > deploy-dwa.txt
+    #kubectl get sts -n dataworks-app | grep -v 'cache-service\|druid-tiny-cluster-brokers\|druid-tiny-cluster-coordinators\|druid-tiny-cluster-historicals\|druid-tiny-cluster-routers\|jobfactory\|meritdashboard\|notification-service\|pf-public-default-backlog-router\|postgres\|pulsar-bookie\|pulsar-broker\|pulsar-proxy\|pulsar-pulsar-manager\|pulsar-zookeeper\|pulsar-toolset\|redis-master\|redis-replicas\|reminder-service\|scheduler\|script-service\|sonarqube-postgresql\|superset-postgresql\|superset-redis-master\|tiny-cluster-zk' | awk 'NR>1{print $1}' > sts-dwa.txt
+    kubectl get deploy -n dataworks-app | grep -v 'dashboard-ui\|druid-druid-operator\|config-data-management\|mongodb\|sonarqube-sonarqube\|superset\|ws-service' | awk 'NR>1{print $1}' > deploy-dwa.txt
+    kubectl get sts -n dataworks-app | grep -v 'cache-service\|druid\|meritdashboard\|pf-public\|postgres\|pulsar\|redis\|web' | awk 'NR>1{print $1}' > sts-dwa.txt
+    lines3=$(cat $File5)
+    sts_lines3=$(cat $File6)
+    if [ -s "$File5" ]
+    then
+      for i in $lines3
+      do
+        kubectl scale deploy $i --replicas=1 -n dataworks-app
+      done
+    else
+      echo "No deployment found"
+    fi
+    if [ -s "$File6" ]
+    then
+      for j in $sts_lines3
+      do
+        kubectl scale sts $j --replicas=1 -n dataworks-app
+      done
+    else
+      echo "No sts found"
+    fi
+    sleep 5

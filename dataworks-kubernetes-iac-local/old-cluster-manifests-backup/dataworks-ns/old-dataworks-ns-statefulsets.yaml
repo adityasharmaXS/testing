@@ -1,0 +1,1019 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    creationTimestamp: "2020-09-02T12:23:17Z"
+    generation: 24
+    labels:
+      app: cache-service
+      tier: dataworks
+    name: cache-service
+    namespace: dataworks
+    resourceVersion: "45540856"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/cache-service
+    uid: 2f2e54f7-7e4f-4383-90a6-a63e7abb5a33
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: cache-service
+        tier: dataworks
+    serviceName: cache-service
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: cache-service
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: CACHE_STORAGE
+            value: /data/cache
+          image: dwproductionus.azurecr.io/cache-service:1.0.5
+          imagePullPolicy: Always
+          name: cache-service
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentRevision: cache-service-6674858d86
+    observedGeneration: 24
+    replicas: 0
+    updateRevision: cache-service-6674858d86
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"job-manager","tier":"dataworks"},"name":"job-manager","namespace":"dataworks"},"spec":{"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"job-manager","tier":"dataworks"}},"serviceName":"job-manager","template":{"metadata":{"labels":{"app":"job-manager","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"PORT","value":"3335"},{"name":"REDIS_HOST","value":"redis"},{"name":"REDIS_PORT","value":"80"}],"image":"dwproductionus.azurecr.io/jobmanager:v1.0.6","imagePullPolicy":"Always","name":"job-manager","ports":[{"containerPort":3335,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T11:32:48Z"
+    generation: 123
+    labels:
+      app: job-manager
+      tier: dataworks
+    name: job-manager
+    namespace: dataworks
+    resourceVersion: "87851875"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/job-manager
+    uid: ee7ad818-5817-4e4e-956c-cb58925764ad
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: job-manager
+        tier: dataworks
+    serviceName: job-manager
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: job-manager
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "3335"
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: MAX_QUEUE_BUFFER_COUNT
+            value: "2000"
+          image: dwproductionus.azurecr.io/jobmanager:v1.0.26.16
+          imagePullPolicy: Always
+          name: job-manager
+          ports:
+          - containerPort: 3335
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: job-manager-84bb45785d
+    observedGeneration: 123
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: job-manager-84bb45785d
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"jobfactory","tier":"dataworks"},"name":"jobfactory","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"jobfactory","tier":"dataworks"}},"serviceName":"jobfactory","template":{"metadata":{"creationTimestamp":null,"labels":{"app":"jobfactory","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"PORT","value":"3334"},{"name":"PULSAR_HOST","value":"pulsar:6650"},{"name":"DASHBOARD_HOST","value":"meritdashboard"},{"name":"OUTPUT_STORAGE","value":"/data/csv"},{"name":"FILE_SHARE","value":"/data/files"},{"name":"OUTPUT_FACTORY_HOST","value":"http://outputfactory"},{"name":"REDIS_HOST","value":"redis"},{"name":"REDIS_PORT","value":"80"}],"image":"dwproductionus.azurecr.io/merit-jobfactory:v1.25.4","imagePullPolicy":"Always","name":"jobfactory","ports":[{"containerPort":3334,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data","name":"data"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"azureFile":{"secretName":"dwk8sdatastorage-secret","shareName":"data"},"name":"data"}]}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T10:08:42Z"
+    generation: 125
+    labels:
+      app: jobfactory
+      tier: dataworks
+    name: jobfactory
+    namespace: dataworks
+    resourceVersion: "87851922"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/jobfactory
+    uid: 0de392de-72a0-4d36-a5d5-e48a9b37c575
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: jobfactory
+        tier: dataworks
+    serviceName: jobfactory
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: jobfactory
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: HTTP_PORT
+            value: "3334"
+          - name: GRPC_PORT
+            value: "53334"
+          - name: MONGO_HOST
+            value: mongodb
+          - name: MONGO_PORT
+            value: "27017"
+          - name: MONGO_DB
+            value: merit
+          - name: PULSAR_HOST
+            value: pulsar:6650
+          - name: DASHBOARD_HOST
+            value: meritdashboard
+          - name: OUTPUT_STORAGE
+            value: /data/csv
+          - name: FILE_SHARE
+            value: /data/files
+          - name: CACHE_STORAGE
+            value: /data/cache
+          - name: OUTPUT_FACTORY_HOST
+            value: http://outputfactory
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: REDIS_EXPIRATION
+            value: "1440"
+          - name: DATA_MANAGEMENT_SERVICE
+            value: http://configdatamanagementservice
+          - name: CRUD_SERVICE
+            value: configdatamanagementservice
+          - name: CRUD_PORT
+            value: "53001"
+          image: dwproductionus.azurecr.io/merit-jobfactory:v1.25.61
+          imagePullPolicy: Always
+          name: jobfactory
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 53334
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: jobfactory-6d8fd46cdb
+    observedGeneration: 125
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: jobfactory-6d8fd46cdb
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"jupyterlab","tier":"dataworks"},"name":"jupyterlab","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"jupyterlab","tier":"dataworks"}},"serviceName":"jupyterlab","template":{"metadata":{"labels":{"app":"jupyterlab","tier":"dataworks"}},"spec":{"containers":[{"image":"dwproduction.azurecr.io/jupyterlab:1.0.0","imagePullPolicy":"Always","name":"jupyterlab","ports":[{"containerPort":8888,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/usr/local/bin/dataworks","name":"jupyterlab-data"}]}],"dnsPolicy":"ClusterFirst","volumes":[{"name":"jupyterlab-data","persistentVolumeClaim":{"claimName":"jupyterlab-data"}}]}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T05:55:55Z"
+    generation: 3
+    labels:
+      app: jupyterlab
+      tier: dataworks
+    name: jupyterlab
+    namespace: dataworks
+    resourceVersion: "145053"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/jupyterlab
+    uid: 8040299a-9a1c-4caf-b414-57e3498fb006
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: jupyterlab
+        tier: dataworks
+    serviceName: jupyterlab
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: jupyterlab
+          tier: dataworks
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/jupyterlab:1.0.0
+          imagePullPolicy: Always
+          name: jupyterlab
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/bin/dataworks
+            name: jupyterlab-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: jupyterlab-data
+          persistentVolumeClaim:
+            claimName: jupyterlab-data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentRevision: jupyterlab-dc8c5fc5b
+    observedGeneration: 3
+    replicas: 0
+    updateRevision: jupyterlab-dc8c5fc5b
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"meritdashboard","tier":"dataworks"},"name":"meritdashboard","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"meritdashboard","tier":"dataworks"}},"serviceName":"meritdashboard","template":{"metadata":{"labels":{"app":"meritdashboard","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"PORT","value":"3001"},{"name":"MONGO_HOST","value":"mongodb"},{"name":"MONGO_PORT","value":"27017"},{"name":"MONGO_DB","value":"merit"},{"name":"PROXIES_FILE","value":"app/proxies.txt"},{"name":"DASHBOARD_HOST","value":"http://dashboard"},{"name":"CASSANDRA_HOST","value":"cassandra"},{"name":"CASSANDRA_KEYSPACE","value":"dataworks"},{"name":"MAX_GOROUTINES","value":"50"},{"name":"PULSAR_HOST","value":"pulsar:6650"},{"name":"FILE_SHARE","value":"/data/files"},{"name":"WS_HOST","value":"\"wss://meritdashboard.thedataworks.com\""},{"name":"WS_SOCKET","value":"\"wss://meritdashboard.thedataworks.com\""},{"name":"JOBFACTORY_HOST","value":"http://jobfactory"}],"image":"dwproductionus.azurecr.io/merit-dashboard:v1.20","imagePullPolicy":"Always","name":"meritdashboard","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data/files","name":"meritdashboard-data"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"name":"meritdashboard-data","persistentVolumeClaim":{"claimName":"meritdashboard-data"}}]}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T11:37:39Z"
+    generation: 13
+    labels:
+      app: meritdashboard
+      tier: dataworks
+    name: meritdashboard
+    namespace: dataworks
+    resourceVersion: "49334973"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/meritdashboard
+    uid: 2ad978e8-489b-4e2c-91b8-375e3f199ace
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: meritdashboard
+        tier: dataworks
+    serviceName: meritdashboard
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: meritdashboard
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "3001"
+          - name: MONGO_HOST
+            value: mongodb
+          - name: MONGO_PORT
+            value: "27017"
+          - name: MONGO_DB
+            value: merit
+          - name: PROXIES_FILE
+            value: app/proxies.txt
+          - name: DASHBOARD_HOST
+            value: http://dashboard
+          - name: CASSANDRA_HOST
+            value: cassandra
+          - name: CASSANDRA_KEYSPACE
+            value: dataworks
+          - name: MAX_GOROUTINES
+            value: "50"
+          - name: PULSAR_HOST
+            value: pulsar:6650
+          - name: FILE_SHARE
+            value: /data/files
+          - name: WS_HOST
+            value: '"wss://meritdashboard.thedataworks.com"'
+          - name: WS_SOCKET
+            value: '"wss://meritdashboard.thedataworks.com"'
+          - name: JOBFACTORY_HOST
+            value: http://jobfactory
+          image: dwproductionus.azurecr.io/merit-dashboard:v1.25
+          imagePullPolicy: Always
+          name: meritdashboard
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/files
+            name: meritdashboard-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: meritdashboard-data
+          persistentVolumeClaim:
+            claimName: meritdashboard-data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentRevision: meritdashboard-7d9d6f86cd
+    observedGeneration: 13
+    replicas: 0
+    updateRevision: meritdashboard-7d9d6f86cd
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"mongodb","tier":"dataworks"},"name":"mongo","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"mongodb","tier":"dataworks"}},"serviceName":"mongodb","template":{"metadata":{"labels":{"app":"mongodb","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"ALLOW_EMPTY_PASSWORD","value":"yes"}],"image":"mongo","imagePullPolicy":"Always","name":"mongodb","ports":[{"containerPort":27017,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data/db","name":"mongodb-data"}]}],"dnsPolicy":"ClusterFirst","initContainers":[{"command":["chown","-R","0999:0999","/data/db"],"image":"busybox","imagePullPolicy":"Always","name":"volume-permissions","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data/db","name":"mongodb-data"}]}],"restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"name":"mongodb-data","persistentVolumeClaim":{"claimName":"mongodb-data"}}]}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T05:06:11Z"
+    generation: 19
+    labels:
+      app: mongodb
+      tier: dataworks
+    name: mongo
+    namespace: dataworks
+    resourceVersion: "64620796"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/mongo
+    uid: 1a077500-9ae8-466e-923d-79e80f6db41f
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: mongodb
+        tier: dataworks
+    serviceName: mongodb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: mongodb
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: ALLOW_EMPTY_PASSWORD
+            value: "yes"
+          image: mongo
+          imagePullPolicy: Always
+          name: mongodb
+          ports:
+          - containerPort: 27017
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodb-data
+          - mountPath: /restored
+            name: mongodb-data-restore
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - chown
+          - -R
+          - 0999:0999
+          - /data/db
+          image: busybox
+          imagePullPolicy: Always
+          name: volume-permissions
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data/db
+            name: mongodb-data
+          - mountPath: /restored
+            name: mongodb-data-restore
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-data
+        - name: mongodb-data-restore
+          persistentVolumeClaim:
+            claimName: mongodb-data-restore
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: mongo-7ff7fdb54d
+    observedGeneration: 19
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: mongo-7ff7fdb54d
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    creationTimestamp: "2021-02-18T14:43:52Z"
+    generation: 11
+    name: notification-service
+    namespace: dataworks
+    resourceVersion: "64620590"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/notification-service
+    uid: 9ff512bb-b690-4ea6-a969-03646f49a948
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: notification-service
+        tier: dataworks
+    serviceName: notification-service
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: notification-service
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "1323"
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_HOST
+            value: postgres
+          - name: POSTGRES_DB
+            value: dataworks
+          - name: POSTGRES_PORT
+            value: "5432"
+          image: dwproductionus.azurecr.io/notification-service:1.0.9
+          imagePullPolicy: Always
+          name: notification-service
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: notification-service-9b5fc5796
+    observedGeneration: 11
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: notification-service-9b5fc5796
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"postgres","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"postgres","tier":"dataworks"}},"serviceName":"postgres","template":{"metadata":{"labels":{"app":"postgres","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"POSTGRES_USER","value":"postgres"},{"name":"POSTGRES_HOST","value":"postgres"},{"name":"POSTGRES_DB","value":"dataworks"},{"name":"POSTGRES_PASSWORD","value":"postgres"},{"name":"PGDATA","value":"/var/lib/postgresql/data/pgdata"}],"image":"postgres:11.8-alpine","imagePullPolicy":"IfNotPresent","livenessProbe":{"exec":{"command":["sh","-c","exec pg_isready -U postgres"]},"failureThreshold":6,"initialDelaySeconds":60,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":5},"name":"postgres","ports":[{"containerPort":5432,"name":"postgres","protocol":"TCP"}],"readinessProbe":{"exec":{"command":["sh","-c","exec pg_isready -U postgres"]},"failureThreshold":3,"initialDelaySeconds":50,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3},"resources":{"requests":{"cpu":"100m","memory":"256Mi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"postgres-data-disk"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"azureDisk":{"diskName":"postgres-pvc","diskURI":"/subscriptions/984ada39-0a0c-43d9-b0e2-1a029e17130a/resourceGroups/MC_DWProductionUS_DWProdUS_centralus/providers/Microsoft.Compute/disks/postgres-pvc","kind":"Managed"},"name":"postgres-data-disk"}]}}}}
+    creationTimestamp: "2020-08-27T04:57:45Z"
+    generation: 1
+    name: postgres
+    namespace: dataworks
+    resourceVersion: "68134429"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/postgres
+    uid: c8eb0d4c-6685-4933-9ec5-19b89be92887
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres
+        tier: dataworks
+    serviceName: postgres
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_HOST
+            value: postgres
+          - name: POSTGRES_DB
+            value: dataworks
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          image: postgres:11.8-alpine
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - exec pg_isready -U postgres
+            failureThreshold: 6
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: postgres
+          ports:
+          - containerPort: 5432
+            name: postgres
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - exec pg_isready -U postgres
+            failureThreshold: 3
+            initialDelaySeconds: 50
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data-disk
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureDisk:
+            cachingMode: ReadWrite
+            diskName: postgres-pvc
+            diskURI: /subscriptions/984ada39-0a0c-43d9-b0e2-1a029e17130a/resourceGroups/MC_DWProductionUS_DWProdUS_centralus/providers/Microsoft.Compute/disks/postgres-pvc
+            fsType: ext4
+            kind: Managed
+            readOnly: false
+          name: postgres-data-disk
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: postgres-6cdb479668
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: postgres-6cdb479668
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    creationTimestamp: "2021-02-18T14:45:40Z"
+    generation: 2
+    name: reminder-service
+    namespace: dataworks
+    resourceVersion: "64621194"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/reminder-service
+    uid: d90d987d-781d-4de9-b82f-21c728c609ad
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: reminder-service
+        tier: dataworks
+    serviceName: notification-service
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: reminder-service
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "1323"
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_HOST
+            value: postgres
+          - name: POSTGRES_DB
+            value: dataworks
+          - name: POSTGRES_PORT
+            value: "5432"
+          image: dwproductionus.azurecr.io/reminder-service:1.0.1
+          imagePullPolicy: Always
+          name: reminder-service
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: reminder-service-55569479cf
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: reminder-service-55569479cf
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    creationTimestamp: "2020-11-24T12:25:13Z"
+    generation: 19
+    labels:
+      app: scheduler
+      tier: dataworks
+    name: scheduler
+    namespace: dataworks
+    resourceVersion: "79322266"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/scheduler
+    uid: e1c5ed46-cd74-43dc-933d-9e54c89234ff
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: scheduler
+        tier: dataworks
+    serviceName: scheduler
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: scheduler
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "3005"
+          - name: GRPC_CRUD_SERVICE
+            value: configdatamanagementservice
+          - name: GRPC_CRUD_PORT
+            value: "53001"
+          - name: GRPC_JOBFACTORY_SERVICE
+            value: jobfactory
+          - name: GRPC_JOBFACTORY_PORT
+            value: "53334"
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: INDEXING_SERVICE
+            value: indexingservice
+          - name: INDEXING_PORT
+            value: "51323"
+          image: dwproductionus.azurecr.io/scheduler:1.0.17
+          imagePullPolicy: Always
+          name: scheduler
+          ports:
+          - containerPort: 3334
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: scheduler-57f5f8b586
+    observedGeneration: 19
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: scheduler-57f5f8b586
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    creationTimestamp: "2021-01-28T15:53:33Z"
+    generation: 31
+    labels:
+      app: script-service
+      tier: dataworks
+    name: script-service
+    namespace: dataworks
+    resourceVersion: "87851803"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/script-service
+    uid: 3d01a037-bad1-40c9-8d31-5d39ddc38047
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: script-service
+        tier: dataworks
+    serviceName: script-service
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: script-service
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: FLASK_PORT
+            value: "5000"
+          - name: PG_HOST
+            value: localhost
+          - name: PG_PORT
+            value: "5432"
+          - name: PG_DB
+            value: postgres
+          - name: PG_USER
+            value: postgres
+          - name: PG_PASS
+            value: postgres
+          - name: FILE_PATH
+            value: /data/csv
+          - name: CRUD_SERVICE
+            value: http://configdatamanagementservice
+          image: dwproductionus.azurecr.io/script-service:1.0.22
+          imagePullPolicy: Always
+          name: script-service
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: script-service-5cc6987dd4
+    observedGeneration: 31
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: script-service-5cc6987dd4
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"weaveworks","tier":"dataworks"},"name":"weaveworks","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"weaveworks","tier":"dataworks"}},"serviceName":"weaveworks","template":{"metadata":{"creationTimestamp":null,"labels":{"app":"weaveworks","tier":"dataworks"}},"spec":{"containers":[{"args":["--mode=app"],"command":["/home/weave/scope"],"image":"docker.io/weaveworks/scope:1.13.0","imagePullPolicy":"IfNotPresent","name":"weaveworks","ports":[{"containerPort":4040,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T05:46:16Z"
+    generation: 1
+    labels:
+      app: weaveworks
+      tier: dataworks
+    name: weaveworks
+    namespace: dataworks
+    resourceVersion: "64620259"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/weaveworks
+    uid: 6cdae458-139d-4758-b452-aa1ec75430e3
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: weaveworks
+        tier: dataworks
+    serviceName: weaveworks
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: weaveworks
+          tier: dataworks
+      spec:
+        containers:
+        - args:
+          - --mode=app
+          command:
+          - /home/weave/scope
+          image: docker.io/weaveworks/scope:1.13.0
+          imagePullPolicy: IfNotPresent
+          name: weaveworks
+          ports:
+          - containerPort: 4040
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: weaveworks-7d4977c666
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: weaveworks-7d4977c666
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"generation":1,"labels":{"app":"weaveworks-cluster-agent","tier":"dataworks"},"name":"weaveworks-cluster-agent","namespace":"dataworks"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"weaveworks-cluster-agent","tier":"dataworks"}},"serviceName":"weaveworks-cluster-agent","template":{"metadata":{"creationTimestamp":null,"labels":{"app":"weaveworks-cluster-agent","tier":"dataworks"}},"spec":{"containers":[{"args":["--mode=probe","--probe-only","--probe.kubernetes.role=cluster","--probe.http.listen=:4041","--probe.publish.interval=4500ms","--probe.spy.interval=2s","weaveworks.dataworks.svc.cluster.local:80"],"command":["/home/weave/scope"],"image":"docker.io/weaveworks/scope:1.13.0","imagePullPolicy":"IfNotPresent","name":"scope-cluster-agent","ports":[{"containerPort":4041,"protocol":"TCP"}],"resources":{"requests":{"cpu":"25m","memory":"80Mi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"serviceAccount":"weaveworks","serviceAccountName":"weaveworks","terminationGracePeriodSeconds":30}},"updateStrategy":{"type":"RollingUpdate"}}}
+    creationTimestamp: "2020-08-19T05:46:01Z"
+    generation: 1
+    labels:
+      app: weaveworks-cluster-agent
+      tier: dataworks
+    name: weaveworks-cluster-agent
+    namespace: dataworks
+    resourceVersion: "64620506"
+    selfLink: /apis/apps/v1/namespaces/dataworks/statefulsets/weaveworks-cluster-agent
+    uid: 5b05171b-cf5f-4679-b27b-2afcae9b2f08
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: weaveworks-cluster-agent
+        tier: dataworks
+    serviceName: weaveworks-cluster-agent
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: weaveworks-cluster-agent
+          tier: dataworks
+      spec:
+        containers:
+        - args:
+          - --mode=probe
+          - --probe-only
+          - --probe.kubernetes.role=cluster
+          - --probe.http.listen=:4041
+          - --probe.publish.interval=4500ms
+          - --probe.spy.interval=2s
+          - weaveworks.dataworks.svc.cluster.local:80
+          command:
+          - /home/weave/scope
+          image: docker.io/weaveworks/scope:1.13.0
+          imagePullPolicy: IfNotPresent
+          name: scope-cluster-agent
+          ports:
+          - containerPort: 4041
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 80Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: weaveworks
+        serviceAccountName: weaveworks
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: weaveworks-cluster-agent-7548f9c5bf
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: weaveworks-cluster-agent-7548f9c5bf
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

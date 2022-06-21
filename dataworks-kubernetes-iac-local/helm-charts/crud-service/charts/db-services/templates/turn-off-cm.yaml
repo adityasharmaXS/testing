@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-turn-off
+data:
+  turn-off.sh: |-
+    #!/bin/bash
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    mv kubectl /usr/local/bin/
+    echo " "
+    #kubectl scale sts web --replicas=0 -n scale-script
+    kubectl scale sts postgres --replicas=0 -n dataworks-app
+    kubectl scale sts redis-master --replicas=0 -n dataworks-app
+    kubectl scale sts meritdashboard --replicas=0 -n dataworks-app
+    kubectl scale deploy mongodb --replicas=0 -n dataworks-app
+    kubectl scale deploy ws-service --replicas=0 -n dataworks-app
+    kubectl scale deploy config-data-management --replicas=0 -n dataworks-app
+    sleep 5

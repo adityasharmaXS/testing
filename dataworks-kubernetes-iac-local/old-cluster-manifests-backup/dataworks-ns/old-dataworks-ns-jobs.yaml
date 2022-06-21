@@ -1,0 +1,221 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    meta.helm.sh/release-name: superset
+    meta.helm.sh/release-namespace: dataworks
+  creationTimestamp: "2020-08-19T08:01:13Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: superset-init-db
+  namespace: dataworks
+  resourceVersion: "110755"
+  selfLink: /apis/batch/v1/namespaces/dataworks/jobs/superset-init-db
+  uid: c5b496f0-e11f-4405-a950-54fc55d481e8
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: c5b496f0-e11f-4405-a950-54fc55d481e8
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: c5b496f0-e11f-4405-a950-54fc55d481e8
+        job-name: superset-init-db
+      name: superset-init-db
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - . /app/pythonpath/superset_bootstrap.sh; . /app/pythonpath/superset_init.sh
+        envFrom:
+        - secretRef:
+            name: superset-env
+        image: preset/superset:latest
+        imagePullPolicy: IfNotPresent
+        name: superset-init-db
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /app/pythonpath
+          name: superset-config
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - /bin/sh
+        - -c
+        - until nc -zv $DB_HOST $DB_PORT -w1; do echo 'waiting for db'; sleep 1; done
+        envFrom:
+        - secretRef:
+            name: superset-env
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        name: wait-for-postgres
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: superset-config
+        secret:
+          defaultMode: 420
+          secretName: superset-config
+status:
+  completionTime: "2020-08-19T08:02:57Z"
+  conditions:
+  - lastProbeTime: "2020-08-19T08:02:57Z"
+    lastTransitionTime: "2020-08-19T08:02:57Z"
+    status: "True"
+    type: Complete
+  startTime: "2020-08-19T08:01:13Z"
+  succeeded: 1
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: "2021-02-18T18:00:03Z"
+  labels:
+    controller-uid: 16ee3a5e-56fb-4119-be87-2d3c77a27ede
+    job-name: postgres-backup-1613671200
+  name: postgres-backup-1613671200
+  namespace: dataworks
+  ownerReferences:
+  - apiVersion: batch/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CronJob
+    name: postgres-backup
+    uid: 3a5d2dbb-9a71-4d98-992e-9d430d3283a0
+  resourceVersion: "44300141"
+  selfLink: /apis/batch/v1/namespaces/dataworks/jobs/postgres-backup-1613671200
+  uid: 16ee3a5e-56fb-4119-be87-2d3c77a27ede
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: 16ee3a5e-56fb-4119-be87-2d3c77a27ede
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: 16ee3a5e-56fb-4119-be87-2d3c77a27ede
+        job-name: postgres-backup-1613671200
+    spec:
+      containers:
+      - args:
+        - -c
+        - echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump -U
+          postgres -h postgres dataworks > /var/backups/backup-$(date +"%m-%d-%Y-%H-%M").sql
+        command:
+        - /bin/sh
+        env:
+        - name: PGPASS
+          valueFrom:
+            secretKeyRef:
+              key: pgpass
+              name: pgpass
+        image: postgres:11.8-alpine
+        imagePullPolicy: IfNotPresent
+        name: postgres-backup
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/backups
+          name: postgres-backup
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: postgres-backup
+        persistentVolumeClaim:
+          claimName: postgres-backup
+status:
+  completionTime: "2021-02-18T18:00:18Z"
+  conditions:
+  - lastProbeTime: "2021-02-18T18:00:18Z"
+    lastTransitionTime: "2021-02-18T18:00:18Z"
+    status: "True"
+    type: Complete
+  startTime: "2021-02-18T18:00:03Z"
+  succeeded: 1
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: "2021-02-18T18:00:03Z"
+  labels:
+    controller-uid: b798685c-2fa7-495c-8626-62d722b06c2b
+    job-name: mongodb-backup-1613671200
+  name: mongodb-backup-1613671200
+  namespace: dataworks
+  ownerReferences:
+  - apiVersion: batch/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CronJob
+    name: mongodb-backup
+    uid: 5f63ee7b-a2a0-4702-b949-bb92c57897ee
+  resourceVersion: "44300125"
+  selfLink: /apis/batch/v1/namespaces/dataworks/jobs/mongodb-backup-1613671200
+  uid: b798685c-2fa7-495c-8626-62d722b06c2b
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: b798685c-2fa7-495c-8626-62d722b06c2b
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: b798685c-2fa7-495c-8626-62d722b06c2b
+        job-name: mongodb-backup-1613671200
+    spec:
+      containers:
+      - args:
+        - -c
+        - mkdir -p /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M") && mongodump -h mongodb:27017  -o
+          /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M")
+        command:
+        - /bin/sh
+        image: mongo
+        imagePullPolicy: Always
+        name: mongodb-backup
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /mongobackup
+          name: mongodb-backup
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mongodb-backup
+        persistentVolumeClaim:
+          claimName: mongodb-backup
+status:
+  completionTime: "2021-02-18T18:00:14Z"
+  conditions:
+  - lastProbeTime: "2021-02-18T18:00:14Z"
+    lastTransitionTime: "2021-02-18T18:00:14Z"
+    status: "True"
+    type: Complete
+  startTime: "2021-02-18T18:00:03Z"
+  succeeded: 1

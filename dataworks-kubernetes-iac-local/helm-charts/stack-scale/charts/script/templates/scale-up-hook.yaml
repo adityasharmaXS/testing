@@ -1,0 +1,38 @@
+{{- if and ( .Values.scale_up ) ( not .Values.scale_down )  -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{.Release.Name}}-scale-up-post-install-hook"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+#  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      serviceAccount: scale-stack
+      securityContext:
+        runAsUser: 0
+        # runAsGroup: 3000
+        # fsGroup: 2000
+      containers:
+      - name: post-install-scale-up-job
+        image: nginx
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "/tmp/script/scale_up.sh"]
+        volumeMounts:
+          - name: config-volume
+            mountPath: /tmp/script
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-scale-up
+            defaultMode: 0777
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 0
+{{- end }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "dashboard-ui.fullname" . }}-test-connection"
+  labels:
+    {{- include "dashboard-ui.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "dashboard-ui.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

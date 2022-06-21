@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-pulsar-metadata-delete
+data:
+  pulsar-metadata-delete.sh: |-
+    #!/bin/bash
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    mv kubectl /usr/local/bin/
+    echo " "
+    sleep 10
+    File1="pod.txt"
+    kubectl get pods -n dataworks-app | grep bookie | grep -v 'init' | awk 'NR>0{print $1}' > pod.txt
+    lines1=$(cat $File1 | wc -l)
+    kubectl scale sts pulsar-bookie --replicas=0 -n dataworks-app
+    kubectl exec -it pulsar-zookeeper-0 -n dataworks-app bash -- /pulsar/bin/bookkeeper shell metaformat -nonInteractive -force
+    kubectl exec -it pulsar-zookeeper-0 -n dataworks-app bash -- /pulsar/bin/bookkeeper shell bookieformat -nonInteractive -force
+    if [ -s "$File1" ]
+    then
+      for ((i=$(( lines1 - 1));i>=0;i--)); do
+        echo " "
+        echo "Deleting the volumes, deleted volume: pulsar-bookie-"$i
+        kubectl delete pvc pulsar-bookie-journal-pulsar-bookie-$i -n dataworks-app
+        kubectl delete pvc pulsar-bookie-ledgers-pulsar-bookie-$i -n dataworks-app
+        echo " "
+      done
+    else
+      echo "No deletion happened"
+    fi
+    echo "Pulsar Scaling down"
+    File2="sts-pulsar.txt"
+    kubectl get sts -n dataworks-app | grep 'pulsar\|backlog-router' | awk 'NR>0{print $1}' > sts-pulsar.txt
+    lines2=$(cat $File2)
+    if [ -s "$File2" ]
+    then
+      for j in $lines2
+      do
+        kubectl scale sts $j --replicas=0 -n dataworks-app
+      done
+    else
+      echo "No sts found"
+    fi
+    kubectl delete sts pf-public-default-backlog-router -n dataworks-app
+    sleep 5

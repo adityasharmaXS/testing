@@ -1,0 +1,120 @@
+apiVersion: v1
+items:
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"batch/v1beta1","kind":"CronJob","metadata":{"annotations":{},"name":"mongodb-backup","namespace":"dataworks"},"spec":{"jobTemplate":{"spec":{"template":{"spec":{"containers":[{"args":["-c","mkdir -p /mongobackup/mongo-$(date +\"%m-%d-%Y-%H-%M\") \u0026\u0026 mongodump -h mongodb:27017  -o /mongobackup/mongo-$(date +\"%m-%d-%Y-%H-%M\")"],"command":["/bin/sh"],"image":"mongo","name":"mongodb-backup","volumeMounts":[{"mountPath":"/mongobackup","name":"mongodb-backup"}]}],"restartPolicy":"Never","volumes":[{"name":"mongodb-backup","persistentVolumeClaim":{"claimName":"mongodb-backup"}}]}}}},"schedule":"0 */6 * * *"}}
+    creationTimestamp: "2021-06-26T06:54:40Z"
+    labels:
+      velero.io/backup-name: dataworksns
+      velero.io/restore-name: dataworksns-20210626065414
+    name: mongodb-backup
+    namespace: dataworks
+    resourceVersion: "198784"
+    uid: 585a0874-2bfd-4d78-8f1b-9793f1f42bdf
+  spec:
+    concurrencyPolicy: Allow
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        template:
+          metadata:
+            creationTimestamp: null
+          spec:
+            containers:
+            - args:
+              - -c
+              - mkdir -p /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M") && mongodump
+                -h mongodb:27017  -o /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M")
+              command:
+              - /bin/sh
+              image: mongo
+              imagePullPolicy: Always
+              name: mongodb-backup
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+              - mountPath: /mongobackup
+                name: mongodb-backup
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
+            volumes:
+            - name: mongodb-backup
+              persistentVolumeClaim:
+                claimName: mongodb-backup
+    schedule: 0 */6 * * *
+    successfulJobsHistoryLimit: 3
+    suspend: true
+  status: {}
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"batch/v1beta1","kind":"CronJob","metadata":{"annotations":{},"name":"postgres-backup","namespace":"dataworks"},"spec":{"jobTemplate":{"spec":{"template":{"spec":{"containers":[{"args":["-c","echo \"$PGPASS\" \u003e /root/.pgpass \u0026\u0026 chmod 600 /root/.pgpass \u0026\u0026 pg_dump -U postgres -h postgres dataworks \u003e /var/backups/backup-$(date +\"%m-%d-%Y-%H-%M\").sql"],"command":["/bin/sh"],"env":[{"name":"PGPASS","valueFrom":{"secretKeyRef":{"key":"pgpass","name":"pgpass"}}}],"image":"postgres:11.8-alpine","name":"postgres-backup","volumeMounts":[{"mountPath":"/var/backups","name":"postgres-backup"}]}],"restartPolicy":"Never","volumes":[{"name":"postgres-backup","persistentVolumeClaim":{"claimName":"postgres-backup"}}]}}}},"schedule":"0 */6 * * *"}}
+    creationTimestamp: "2021-06-26T06:54:40Z"
+    labels:
+      velero.io/backup-name: dataworksns
+      velero.io/restore-name: dataworksns-20210626065414
+    name: postgres-backup
+    namespace: dataworks
+    resourceVersion: "198785"
+    uid: 15af6011-c9a8-4062-8c81-2030cfe36c6f
+  spec:
+    concurrencyPolicy: Allow
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        template:
+          metadata:
+            creationTimestamp: null
+          spec:
+            containers:
+            - args:
+              - -c
+              - echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump
+                -U postgres -h postgres dataworks > /var/backups/backup-$(date +"%m-%d-%Y-%H-%M").sql
+              command:
+              - /bin/sh
+              env:
+              - name: PGPASS
+                valueFrom:
+                  secretKeyRef:
+                    key: pgpass
+                    name: pgpass
+              image: postgres:11.8-alpine
+              imagePullPolicy: IfNotPresent
+              name: postgres-backup
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+              - mountPath: /var/backups
+                name: postgres-backup
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
+            volumes:
+            - name: postgres-backup
+              persistentVolumeClaim:
+                claimName: postgres-backup
+    schedule: 0 */6 * * *
+    successfulJobsHistoryLimit: 3
+    suspend: true
+  status: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

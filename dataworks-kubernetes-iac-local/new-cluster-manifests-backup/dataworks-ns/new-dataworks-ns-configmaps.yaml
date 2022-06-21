@@ -1,0 +1,115 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2021-06-26T06:54:18Z"
+    labels:
+      velero.io/backup-name: dataworksns
+      velero.io/restore-name: dataworksns-20210626065414
+    name: jaeger-operator-lock
+    namespace: dataworks
+    resourceVersion: "198079"
+    uid: 2f0b4f8a-77b9-4dbc-9932-968265bcaa31
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIE6DCCAtCgAwIBAgIQSHo+r0iZ36Gy/LTssRabcDANBgkqhkiG9w0BAQsFADAN
+      MQswCQYDVQQDEwJjYTAgFw0yMTA2MjQxNzA0MzFaGA8yMDUxMDYyNDE3MTQzMVow
+      DTELMAkGA1UEAxMCY2EwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDW
+      6T5iUn+Dt6rOL7i4M7q3an6g+XXHoRR8tHEiBV5kn7FoCP0DMocrYX4y+gvndIIh
+      uSC6Ubzud+eEBHh7z9tT7ZO6bEb461RDCkQBvb2p0vpYtgNjOl5Q5gG19T9rw38T
+      3T4V3ACJfo/dfyebEBjylyTN//pecLeLCnWgXwAizK2tCnZ3DzLpsRYSXrgtOoKm
+      8XvXO87bvs4Azknx6tqXBpyPPoa3NzmRgZSqnf9ie98/tyKz8nc71O3yO6gsy7os
+      852xJD0/1ykQLIpmk7YioemjzyISc5U00VcYgk/zJctsFyxDp39pX2mEIS7s4pDL
+      wO8aPTfFjcDfXxzIeN1hZ85FGbJyGdu6HQuLPAtCaTZ+Uqa1ArLP3U86vmuidUb/
+      ZtF8RVOB2bZCKrA+LkOxFOdufLL044pzs1E6cE99l7v4H0Hj3UcOmpnHP4hH/gVY
+      ihmTBwTY6l3RURVj4guz2JUPyfOlx9Z2vzM9xtGPai5lUZYhIkL4zu/WjTel4as4
+      7RzYH9MsHm2upzVFA41gPPqNx5kWKfhA1qZmcUh8fUSsT/uSgVz9vDgchi06xwa8
+      S36LMfbClO55XWluzZxWCUJsncK9M4DgK7QmzQGl//I4DPyDq54tXkAIuaQ5H+4A
+      A7URl2blLCImnZNAFE9n3X/Z8h+rKQyekOXJIiDN9wIDAQABo0IwQDAOBgNVHQ8B
+      Af8EBAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUdLjeuecUe91VRTGU
+      v+oehkk7bIQwDQYJKoZIhvcNAQELBQADggIBAJFBaxgnjQGKV0mqPrFx4CH2aDMo
+      KK+hl3SgpIHAQFJ4suPjZpX+ZTw4oqy07VDgESj8lwHLwxUra4Mvc3zx5rQgQM6p
+      9SsOAB0y93VVTFpkn2z+x/kWYM5zYXZIyBiliBKhap9I6rpNmBbbnbX2gmxhQsD7
+      cUbdZis/AemrCBiGPR2bMUlOWU5IQaIJdd1dIxqeabiagvCr9N7WnouCt4f2O+4l
+      DIifxeI0UtDfBsDMkZy/7gFnpJEG3qJFIdp0b935VEJjSDQJOOdQeSquvV085fgH
+      XWnCbBGNqlgRPRCFjxFkjZFH0i1DFY4WvySxvNqVOl8w9oUPTk8ERSxRUHgPMu8u
+      7W02V2V4pPek/Ik3qaT58GcXTTjlM4aDMGr0bsFDoEd6SI4DxUhQCie9QZYdcQIU
+      hSY3wWk4qo9Uq7YVtg451GG1WqB8iUnXw+E3z7Zd69G39UI3lZ/XWy6e2NxU1ShG
+      vfmdhhCrHtwk0fRrt6vUEZqBdrZP45VU3bRlsRW8yhETfHaIA5zDlLiYLx/qM50/
+      lbpYIgz04vNn3uWl23aJ1PxGvSMDWelb7fQTe3KFtECHnLcJlJ1gA4bzr8JkCyPE
+      HmOyTJwkhOUmhrBmy2+CPO38MQXfU7yr/fBTreJA2XV0PPcsFyUP6Xh+6i9v6GoU
+      rGwtmv0AYPZfM2KQ
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2021-06-24T17:35:30Z"
+    name: kube-root-ca.crt
+    namespace: dataworks
+    resourceVersion: "2380"
+    uid: eccfe0c2-1d88-4e31-ac2f-1fcd285c5ad9
+- apiVersion: v1
+  data:
+    prometheus.yml: |
+      global:
+          scrape_interval: 15s
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['localhost:9090']
+        - job_name: 'kubernetes-pods'
+          kubernetes_sd_configs:
+            - role: pod
+        - job_name: kafkaesque-service
+          scrape_interval: 30s
+          scrape_timeout: 10s
+          metrics_path: /pulsarmetrics
+          scheme: https
+          static_configs:
+          - targets:
+            - uscentral1.azure.kafkaesque.io:8964
+          bearer_token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtZXJpdC10aGVkYXRhd29ya3MtY29tLWNsaWVudC01ZWIyZGZkYjYyMjQxIn0.AExoesCB4IFmLIZM-B4zo3xpR-6ZjXBLzLz7psfC0sT5TAn1qGkZ_dAhf3GbMoujum9DsL3cfOfYd53gH-mwxcY6a4EFV_h-4EDlBWXYo-Q44d4S3U9qqlRIpt1aybckIvmMdB5N9x45_hBVHvzBARTB8GY-6dbvAlecpBVf67T_iaVewvw-Pkq4Prz12FkT7cyfEvWFVSmJUAmsWZH40Wb6bv3KL0P8kqdN90x6HT2fukMl6EC6JB2ZRBVpG-qzrmk5weblk1APKcnRyrHAZlxVk9d6511cQQpkpkTXzGOvVbATQTEjpxqFGUkPlpcQT67dfUyFJthqhHC_zD4XqQ
+
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+              action: keep
+              regex: true
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+              action: replace
+              target_label: __metrics_path__
+              regex: (.+)
+            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              action: replace
+              regex: ([^:]+)(?::\d+)?;(\d+)
+              replacement: $1:$2
+              target_label: __address__
+            - action: labelmap
+              regex: __meta_kubernetes_pod_label_(.+)
+            - source_labels: [__meta_kubernetes_namespace]
+              action: replace
+              target_label: kubernetes_namespace
+            - source_labels: [__meta_kubernetes_pod_label_component]
+              action: replace
+              target_label: job
+            - source_labels: [__meta_kubernetes_pod_name]
+              action: replace
+              target_label: kubernetes_pod_name
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"prometheus.yml":"global:\n    scrape_interval: 15s\nscrape_configs:\n  - job_name: 'prometheus'\n    static_configs:\n      - targets: ['localhost:9090']\n  - job_name: 'kubernetes-pods'\n    kubernetes_sd_configs:\n      - role: pod\n  - job_name: kafkaesque-service\n    scrape_interval: 30s\n    scrape_timeout: 10s\n    metrics_path: /pulsarmetrics\n    scheme: https\n    static_configs:\n    - targets:\n      - uscentral1.azure.kafkaesque.io:8964\n    bearer_token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtZXJpdC10aGVkYXRhd29ya3MtY29tLWNsaWVudC01ZWIyZGZkYjYyMjQxIn0.AExoesCB4IFmLIZM-B4zo3xpR-6ZjXBLzLz7psfC0sT5TAn1qGkZ_dAhf3GbMoujum9DsL3cfOfYd53gH-mwxcY6a4EFV_h-4EDlBWXYo-Q44d4S3U9qqlRIpt1aybckIvmMdB5N9x45_hBVHvzBARTB8GY-6dbvAlecpBVf67T_iaVewvw-Pkq4Prz12FkT7cyfEvWFVSmJUAmsWZH40Wb6bv3KL0P8kqdN90x6HT2fukMl6EC6JB2ZRBVpG-qzrmk5weblk1APKcnRyrHAZlxVk9d6511cQQpkpkTXzGOvVbATQTEjpxqFGUkPlpcQT67dfUyFJthqhHC_zD4XqQ\n\n    relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n        action: keep\n        regex: true\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]\n        action: replace\n        target_label: __metrics_path__\n        regex: (.+)\n      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]\n        action: replace\n        regex: ([^:]+)(?::\\d+)?;(\\d+)\n        replacement: $1:$2\n        target_label: __address__\n      - action: labelmap\n        regex: __meta_kubernetes_pod_label_(.+)\n      - source_labels: [__meta_kubernetes_namespace]\n        action: replace\n        target_label: kubernetes_namespace\n      - source_labels: [__meta_kubernetes_pod_label_component]\n        action: replace\n        target_label: job\n      - source_labels: [__meta_kubernetes_pod_name]\n        action: replace\n        target_label: kubernetes_pod_name\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"prometheus-config1","namespace":"dataworks"}}
+    creationTimestamp: "2021-06-26T06:54:18Z"
+    labels:
+      velero.io/backup-name: dataworksns
+      velero.io/restore-name: dataworksns-20210626065414
+    name: prometheus-config1
+    namespace: dataworks
+    resourceVersion: "198080"
+    uid: cf1b88f0-2691-4f92-aa74-4b0cfd20b7c4
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

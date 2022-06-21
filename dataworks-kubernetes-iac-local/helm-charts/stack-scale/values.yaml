@@ -1,0 +1,6 @@
+# Stack Scale Up/Down
+script:
+  scale_down: false
+  scale_up: false
+
+

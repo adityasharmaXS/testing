@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{.Release.Name}}-update-hook"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+#  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+#      serviceAccount: scale-test
+      securityContext:
+        runAsUser: 0
+        # runAsGroup: 3000
+        # fsGroup: 2000
+      containers:
+      - name: function-update-job
+        image: bitnami/git
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "/tmp/script/fission-functions.sh"]
+        env:
+          - name: GIT_USER
+            valueFrom:
+              secretKeyRef:
+                key: GIT_USER
+                name: fission-function-git
+          - name: GIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: GIT_PASSWORD
+                name: fission-function-git
+        volumeMounts:
+          - name: config-volume
+            mountPath: /tmp/script
+          - name: kube-config
+            mountPath: /root/.kube
+            readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-fission-function
+            defaultMode: 0777
+        - name: kube-config
+          secret:
+            secretName: fission-config
+            defaultMode: 0722
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 0

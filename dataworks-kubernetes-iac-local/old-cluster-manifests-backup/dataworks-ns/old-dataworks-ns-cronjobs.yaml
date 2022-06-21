@@ -1,0 +1,348 @@
+apiVersion: v1
+items:
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"batch/v1beta1","kind":"CronJob","metadata":{"annotations":{},"name":"mongodb-backup","namespace":"dataworks"},"spec":{"jobTemplate":{"spec":{"template":{"spec":{"containers":[{"args":["-c","mkdir -p /mongobackup/mongo-$(date +\"%m-%d-%Y-%H-%M\") \u0026\u0026 mongodump -h mongodb:27017  -o /mongobackup/mongo-$(date +\"%m-%d-%Y-%H-%M\")"],"command":["/bin/sh"],"image":"mongo","name":"mongodb-backup","volumeMounts":[{"mountPath":"/mongobackup","name":"mongodb-backup"}]}],"restartPolicy":"Never","volumes":[{"name":"mongodb-backup","persistentVolumeClaim":{"claimName":"mongodb-backup"}}]}}}},"schedule":"0 */6 * * *"}}
+    creationTimestamp: "2020-10-13T04:52:45Z"
+    name: mongodb-backup
+    namespace: dataworks
+    resourceVersion: "45490050"
+    selfLink: /apis/batch/v1beta1/namespaces/dataworks/cronjobs/mongodb-backup
+    uid: 5f63ee7b-a2a0-4702-b949-bb92c57897ee
+  spec:
+    concurrencyPolicy: Allow
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        template:
+          metadata:
+            creationTimestamp: null
+          spec:
+            containers:
+            - args:
+              - -c
+              - mkdir -p /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M") && mongodump
+                -h mongodb:27017  -o /mongobackup/mongo-$(date +"%m-%d-%Y-%H-%M")
+              command:
+              - /bin/sh
+              image: mongo
+              imagePullPolicy: Always
+              name: mongodb-backup
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+              - mountPath: /mongobackup
+                name: mongodb-backup
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
+            volumes:
+            - name: mongodb-backup
+              persistentVolumeClaim:
+                claimName: mongodb-backup
+    schedule: 0 */6 * * *
+    successfulJobsHistoryLimit: 3
+    suspend: true
+  status:
+    active:
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613692800
+      namespace: dataworks
+      resourceVersion: "44359960"
+      uid: f22a87e0-64a5-4214-ac51-d713d1a916a5
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613714400
+      namespace: dataworks
+      resourceVersion: "44420060"
+      uid: 4e58ae5d-e84b-450a-b28f-c95a7a3ec96e
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613736000
+      namespace: dataworks
+      resourceVersion: "44480421"
+      uid: 94cfbbb1-12f8-496f-8f81-c4fc8901ed7c
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613757600
+      namespace: dataworks
+      resourceVersion: "44535370"
+      uid: ac3e0d5b-ca67-4453-98fc-85af8ed6df25
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613779200
+      namespace: dataworks
+      resourceVersion: "44595657"
+      uid: 0259d137-ebef-4e1c-9bd0-896e1c9214f6
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613800800
+      namespace: dataworks
+      resourceVersion: "44656106"
+      uid: 77992fe8-a984-4d72-9baf-feb75c8a87bf
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613822400
+      namespace: dataworks
+      resourceVersion: "44716724"
+      uid: ad99bfe5-3334-4ebe-97b2-8e50ce4710c1
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613844000
+      namespace: dataworks
+      resourceVersion: "44777502"
+      uid: bec4527d-9ba3-413d-8214-5545f8188f28
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613865600
+      namespace: dataworks
+      resourceVersion: "44838412"
+      uid: e99b8e87-2c9f-401c-891b-53e96723aeed
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613887200
+      namespace: dataworks
+      resourceVersion: "44899443"
+      uid: 832de2de-0972-4457-afc5-3b5bfa68fda5
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613908800
+      namespace: dataworks
+      resourceVersion: "44960979"
+      uid: a4c7573f-4943-4a93-9aa4-d4bbf4d2afcb
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613930400
+      namespace: dataworks
+      resourceVersion: "45023625"
+      uid: 091b1e01-c359-4c9c-bf72-eb16ba5327a3
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613952000
+      namespace: dataworks
+      resourceVersion: "45086713"
+      uid: aa3b5f35-b90b-4ac7-a787-f29be01b4bf5
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613973600
+      namespace: dataworks
+      resourceVersion: "45148365"
+      uid: 7d805bce-6fe5-4fa7-bfd1-677b0e450d97
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1613995200
+      namespace: dataworks
+      resourceVersion: "45211170"
+      uid: a53a59af-dc71-4383-b35e-dfb453f354fc
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1614016800
+      namespace: dataworks
+      resourceVersion: "45273679"
+      uid: f4a6bace-c98b-4795-a431-5f7d36e802ed
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1614038400
+      namespace: dataworks
+      resourceVersion: "45335693"
+      uid: 12f32240-51c7-486e-9a44-678b41011aba
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1614060000
+      namespace: dataworks
+      resourceVersion: "45397756"
+      uid: af710279-506d-4fe6-9e7b-7983a6877c4d
+    - apiVersion: batch/v1
+      kind: Job
+      name: mongodb-backup-1614081600
+      namespace: dataworks
+      resourceVersion: "45460241"
+      uid: 1434f90e-1610-4fba-8dca-3a16061a6e4e
+    lastScheduleTime: "2021-02-23T12:00:00Z"
+- apiVersion: batch/v1beta1
+  kind: CronJob
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"batch/v1beta1","kind":"CronJob","metadata":{"annotations":{},"name":"postgres-backup","namespace":"dataworks"},"spec":{"jobTemplate":{"spec":{"template":{"spec":{"containers":[{"args":["-c","echo \"$PGPASS\" \u003e /root/.pgpass \u0026\u0026 chmod 600 /root/.pgpass \u0026\u0026 pg_dump -U postgres -h postgres dataworks \u003e /var/backups/backup-$(date +\"%m-%d-%Y-%H-%M\").sql"],"command":["/bin/sh"],"env":[{"name":"PGPASS","valueFrom":{"secretKeyRef":{"key":"pgpass","name":"pgpass"}}}],"image":"postgres:11.8-alpine","name":"postgres-backup","volumeMounts":[{"mountPath":"/var/backups","name":"postgres-backup"}]}],"restartPolicy":"Never","volumes":[{"name":"postgres-backup","persistentVolumeClaim":{"claimName":"postgres-backup"}}]}}}},"schedule":"0 */6 * * *"}}
+    creationTimestamp: "2020-10-13T04:53:05Z"
+    name: postgres-backup
+    namespace: dataworks
+    resourceVersion: "45490150"
+    selfLink: /apis/batch/v1beta1/namespaces/dataworks/cronjobs/postgres-backup
+    uid: 3a5d2dbb-9a71-4d98-992e-9d430d3283a0
+  spec:
+    concurrencyPolicy: Allow
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        template:
+          metadata:
+            creationTimestamp: null
+          spec:
+            containers:
+            - args:
+              - -c
+              - echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump
+                -U postgres -h postgres dataworks > /var/backups/backup-$(date +"%m-%d-%Y-%H-%M").sql
+              command:
+              - /bin/sh
+              env:
+              - name: PGPASS
+                valueFrom:
+                  secretKeyRef:
+                    key: pgpass
+                    name: pgpass
+              image: postgres:11.8-alpine
+              imagePullPolicy: IfNotPresent
+              name: postgres-backup
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+              - mountPath: /var/backups
+                name: postgres-backup
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
+            volumes:
+            - name: postgres-backup
+              persistentVolumeClaim:
+                claimName: postgres-backup
+    schedule: 0 */6 * * *
+    successfulJobsHistoryLimit: 3
+    suspend: true
+  status:
+    active:
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613692800
+      namespace: dataworks
+      resourceVersion: "44359963"
+      uid: be15c749-ddf5-4c65-b20d-5ade1fa73776
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613714400
+      namespace: dataworks
+      resourceVersion: "44420063"
+      uid: 7e4128b9-2b90-42c1-a78a-fa538426fd38
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613736000
+      namespace: dataworks
+      resourceVersion: "44480424"
+      uid: 65e731e3-ec16-44a1-95bb-fb2baa2f14e5
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613757600
+      namespace: dataworks
+      resourceVersion: "44535373"
+      uid: ba21af30-f03e-48e6-bdda-1b09f375eb42
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613779200
+      namespace: dataworks
+      resourceVersion: "44595660"
+      uid: 8e220a92-1ba9-456a-bdfc-7591d065ef7f
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613800800
+      namespace: dataworks
+      resourceVersion: "44656109"
+      uid: 162e709f-bc4c-4caf-8858-2767343d9a25
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613822400
+      namespace: dataworks
+      resourceVersion: "44716729"
+      uid: ccdd9b18-433a-4ef7-bcbe-e37cf689c71c
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613844000
+      namespace: dataworks
+      resourceVersion: "44777505"
+      uid: 8e48a0e9-c430-42be-af5e-bc21e63d572f
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613865600
+      namespace: dataworks
+      resourceVersion: "44838415"
+      uid: 796a0512-d450-4764-ad59-c7d6a16aea72
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613887200
+      namespace: dataworks
+      resourceVersion: "44899446"
+      uid: ddbd3db5-b3eb-4f65-b5ad-643c8754731b
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613908800
+      namespace: dataworks
+      resourceVersion: "44960982"
+      uid: 9b25a0c4-4e4b-471e-a88c-c76b373eda7e
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613930400
+      namespace: dataworks
+      resourceVersion: "45023628"
+      uid: 2e735040-8742-4941-99f4-2858466adddf
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613952000
+      namespace: dataworks
+      resourceVersion: "45086716"
+      uid: 40d1eee3-ddfe-4428-bad6-21be05879404
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613973600
+      namespace: dataworks
+      resourceVersion: "45148368"
+      uid: 5372c0f0-3624-4f19-8612-53ee5876bee1
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1613995200
+      namespace: dataworks
+      resourceVersion: "45211173"
+      uid: 60c72016-c114-4154-bffa-11425e89b44e
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1614016800
+      namespace: dataworks
+      resourceVersion: "45273682"
+      uid: a080f9f6-c753-4e04-ad4f-f52220d44d65
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1614038400
+      namespace: dataworks
+      resourceVersion: "45335696"
+      uid: 7146a0e7-50d9-47ae-8f16-abb9580c93d2
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1614060000
+      namespace: dataworks
+      resourceVersion: "45397759"
+      uid: 44116efb-e844-4bfd-b3c0-1c03c0187adb
+    - apiVersion: batch/v1
+      kind: Job
+      name: postgres-backup-1614081600
+      namespace: dataworks
+      resourceVersion: "45460244"
+      uid: 924f85c1-1c0d-4bf5-8ea6-cdfce23a5619
+    lastScheduleTime: "2021-02-23T12:00:00Z"
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

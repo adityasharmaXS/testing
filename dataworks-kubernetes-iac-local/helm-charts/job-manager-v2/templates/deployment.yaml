@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "job-manager-v2.fullname" . }}
+  labels:
+    {{- include "job-manager-v2.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/contact: {{ .Values.labels.contact }}
+    app.kubernetes.io/workload: {{ .Values.labels.workload }}
+    app.kubernetes.io/env: {{ .Values.labels.env }}
+    app.kubernetes.io/tier: {{ .Values.labels.tier }}
+    app.kubernetes.io/project: {{ .Values.labels.project }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "job-manager-v2.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.Version }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      app.kubernetes.io/contact: {{ .Values.labels.contact }}
+      app.kubernetes.io/workload: {{ .Values.labels.workload }}
+      app.kubernetes.io/env: {{ .Values.labels.env }}
+      app.kubernetes.io/tier: {{ .Values.labels.tier }}
+      app.kubernetes.io/project: {{ .Values.labels.project }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "job-manager-v2.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/contact: {{ .Values.labels.contact }}
+        app.kubernetes.io/workload: {{ .Values.labels.workload }}
+        app.kubernetes.io/env: {{ .Values.labels.env }}
+        app.kubernetes.io/tier: {{ .Values.labels.tier }}
+        app.kubernetes.io/project: {{ .Values.labels.project }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "job-manager-v2.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: JAEGER_SAMPLER_TYPE
+              value: {{ .Values.env.JAEGER_SAMPLER_TYPE | quote }}
+            - name: JAEGER_SAMPLER_PARAM
+              value: {{ .Values.env.JAEGER_SAMPLER_PARAM | quote }}
+            - name: JAEGER_AGENT_HOST
+              value: {{ .Values.env.JAEGER_AGENT_HOST | quote }}
+            - name: REDIS_HOST
+              value: {{ .Values.env.REDIS_HOST | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.env.REDIS_PORT | quote }}
+            - name: MAX_QUEUE_BUFFER_COUNT
+              value: {{ .Values.env.MAX_QUEUE_BUFFER_COUNT | quote }}
+            - name: PULSAR_HOST
+              value: {{ .Values.env.PULSAR_HOST | quote }}
+            - name: PULSAR_ENDPOINT
+              value: {{ .Values.env.PULSAR_ENDPOINT | quote }}
+            - name: HTTP_PORT
+              value: {{ .Values.env.HTTP_PORT | quote }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3006
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

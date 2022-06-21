@@ -1,0 +1,3266 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"cert-manager","app.kubernetes.io/component":"controller","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"cert-manager","helm.sh/chart":"cert-manager-v0.16.1"},"name":"cert-manager","namespace":"cert-manager"},"spec":{"replicas":1,"selector":{"matchLabels":{"app.kubernetes.io/component":"controller","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/name":"cert-manager"}},"template":{"metadata":{"annotations":{"prometheus.io/path":"/metrics","prometheus.io/port":"9402","prometheus.io/scrape":"true"},"labels":{"app":"cert-manager","app.kubernetes.io/component":"controller","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"cert-manager","helm.sh/chart":"cert-manager-v0.16.1"}},"spec":{"containers":[{"args":["--v=2","--cluster-resource-namespace=$(POD_NAMESPACE)","--leader-election-namespace=kube-system"],"env":[{"name":"POD_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}}],"image":"quay.io/jetstack/cert-manager-controller:v0.16.1","imagePullPolicy":"IfNotPresent","name":"cert-manager","ports":[{"containerPort":9402,"protocol":"TCP"}],"resources":{}}],"serviceAccountName":"cert-manager"}}}}
+    creationTimestamp: "2020-08-19T09:23:58Z"
+    generation: 1
+    labels:
+      app: cert-manager
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: cert-manager
+      helm.sh/chart: cert-manager-v0.16.1
+    name: cert-manager
+    namespace: cert-manager
+    resourceVersion: "81041347"
+    selfLink: /apis/apps/v1/namespaces/cert-manager/deployments/cert-manager
+    uid: 8409669c-6152-4f88-805f-4f04e9cd2204
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/name: cert-manager
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9402"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app: cert-manager
+          app.kubernetes.io/component: controller
+          app.kubernetes.io/instance: cert-manager
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: cert-manager
+          helm.sh/chart: cert-manager-v0.16.1
+      spec:
+        containers:
+        - args:
+          - --v=2
+          - --cluster-resource-namespace=$(POD_NAMESPACE)
+          - --leader-election-namespace=kube-system
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          image: quay.io/jetstack/cert-manager-controller:v0.16.1
+          imagePullPolicy: IfNotPresent
+          name: cert-manager
+          ports:
+          - containerPort: 9402
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: cert-manager
+        serviceAccountName: cert-manager
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T09:23:58Z"
+      lastUpdateTime: "2020-08-19T09:24:05Z"
+      message: ReplicaSet "cert-manager-7ddc5b4db" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-09T13:40:52Z"
+      lastUpdateTime: "2021-06-09T13:40:52Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"cainjector","app.kubernetes.io/component":"cainjector","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"cainjector","helm.sh/chart":"cert-manager-v0.16.1"},"name":"cert-manager-cainjector","namespace":"cert-manager"},"spec":{"replicas":1,"selector":{"matchLabels":{"app.kubernetes.io/component":"cainjector","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/name":"cainjector"}},"template":{"metadata":{"labels":{"app":"cainjector","app.kubernetes.io/component":"cainjector","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"cainjector","helm.sh/chart":"cert-manager-v0.16.1"}},"spec":{"containers":[{"args":["--v=2","--leader-election-namespace=kube-system"],"env":[{"name":"POD_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}}],"image":"quay.io/jetstack/cert-manager-cainjector:v0.16.1","imagePullPolicy":"IfNotPresent","name":"cert-manager","resources":{}}],"serviceAccountName":"cert-manager-cainjector"}}}}
+    creationTimestamp: "2020-08-19T09:23:58Z"
+    generation: 1
+    labels:
+      app: cainjector
+      app.kubernetes.io/component: cainjector
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: cainjector
+      helm.sh/chart: cert-manager-v0.16.1
+    name: cert-manager-cainjector
+    namespace: cert-manager
+    resourceVersion: "87663909"
+    selfLink: /apis/apps/v1/namespaces/cert-manager/deployments/cert-manager-cainjector
+    uid: 1965fb9a-eff5-4033-9ffa-fb647b6027d5
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: cainjector
+        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/name: cainjector
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: cainjector
+          app.kubernetes.io/component: cainjector
+          app.kubernetes.io/instance: cert-manager
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: cainjector
+          helm.sh/chart: cert-manager-v0.16.1
+      spec:
+        containers:
+        - args:
+          - --v=2
+          - --leader-election-namespace=kube-system
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          image: quay.io/jetstack/cert-manager-cainjector:v0.16.1
+          imagePullPolicy: IfNotPresent
+          name: cert-manager
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: cert-manager-cainjector
+        serviceAccountName: cert-manager-cainjector
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T09:23:58Z"
+      lastUpdateTime: "2020-08-19T09:24:03Z"
+      message: ReplicaSet "cert-manager-cainjector-6644dc4975" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-28T22:10:34Z"
+      lastUpdateTime: "2021-06-28T22:10:34Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"webhook","app.kubernetes.io/component":"webhook","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"webhook","helm.sh/chart":"cert-manager-v0.16.1"},"name":"cert-manager-webhook","namespace":"cert-manager"},"spec":{"replicas":1,"selector":{"matchLabels":{"app.kubernetes.io/component":"webhook","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/name":"webhook"}},"template":{"metadata":{"labels":{"app":"webhook","app.kubernetes.io/component":"webhook","app.kubernetes.io/instance":"cert-manager","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"webhook","helm.sh/chart":"cert-manager-v0.16.1"}},"spec":{"containers":[{"args":["--v=2","--secure-port=10250","--dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)","--dynamic-serving-ca-secret-name=cert-manager-webhook-ca","--dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.cert-manager,cert-manager-webhook.cert-manager.svc"],"env":[{"name":"POD_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}}],"image":"quay.io/jetstack/cert-manager-webhook:v0.16.1","imagePullPolicy":"IfNotPresent","livenessProbe":{"httpGet":{"path":"/livez","port":6080,"scheme":"HTTP"},"initialDelaySeconds":60,"periodSeconds":10},"name":"cert-manager","ports":[{"containerPort":10250,"name":"https"}],"readinessProbe":{"httpGet":{"path":"/healthz","port":6080,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":5},"resources":{}}],"serviceAccountName":"cert-manager-webhook"}}}}
+    creationTimestamp: "2020-08-19T09:23:59Z"
+    generation: 1
+    labels:
+      app: webhook
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: webhook
+      helm.sh/chart: cert-manager-v0.16.1
+    name: cert-manager-webhook
+    namespace: cert-manager
+    resourceVersion: "68134288"
+    selfLink: /apis/apps/v1/namespaces/cert-manager/deployments/cert-manager-webhook
+    uid: 9483ae64-688d-4469-b5e5-43486b9aa806
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: webhook
+        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/name: webhook
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: webhook
+          app.kubernetes.io/component: webhook
+          app.kubernetes.io/instance: cert-manager
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: webhook
+          helm.sh/chart: cert-manager-v0.16.1
+      spec:
+        containers:
+        - args:
+          - --v=2
+          - --secure-port=10250
+          - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
+          - --dynamic-serving-ca-secret-name=cert-manager-webhook-ca
+          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.cert-manager,cert-manager-webhook.cert-manager.svc
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          image: quay.io/jetstack/cert-manager-webhook:v0.16.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /livez
+              port: 6080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: cert-manager
+          ports:
+          - containerPort: 10250
+            name: https
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 6080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: cert-manager-webhook
+        serviceAccountName: cert-manager-webhook
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T09:23:59Z"
+      lastUpdateTime: "2020-08-19T09:24:09Z"
+      message: ReplicaSet "cert-manager-webhook-7b887475fb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-05-02T19:47:56Z"
+      lastUpdateTime: "2021-05-02T19:47:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"captcha-solver","tier":"dataworks"},"name":"captcha-solver","namespace":"dataworks"},"spec":{"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"captcha-solver","tier":"dataworks"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"captcha-solver","tier":"dataworks"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/captcha_solver:1.0.0","imagePullPolicy":"Always","name":"captcha-solver","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T09:34:30Z"
+    generation: 2
+    labels:
+      app: captcha-solver
+      tier: dataworks
+    name: captcha-solver
+    namespace: dataworks
+    resourceVersion: "64620315"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/captcha-solver
+    uid: 32e76045-2063-4abe-aa6f-ad2b04c86e48
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: captcha-solver
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: captcha-solver
+          tier: dataworks
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/captcha_solver:1.0.1
+          imagePullPolicy: Always
+          name: captcha-solver
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-26T12:33:35Z"
+      lastUpdateTime: "2020-08-26T12:34:23Z"
+      message: ReplicaSet "captcha-solver-54d84f4656" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:21:45Z"
+      lastUpdateTime: "2021-04-21T20:21:45Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "225"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"configdatamanagementservice","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"configdatamanagementservice"}},"template":{"metadata":{"labels":{"app":"configdatamanagementservice"}},"spec":{"containers":[{"env":[{"name":"REDIS_HOST","valueFrom":{"secretKeyRef":{"key":"redis_host","name":"configdatamanagement-secret"}}},{"name":"REDIS_PORT","valueFrom":{"secretKeyRef":{"key":"redis_port","name":"configdatamanagement-secret"}}},{"name":"JWT","valueFrom":{"secretKeyRef":{"key":"jwt","name":"configdatamanagement-secret"}}},{"name":"SESSION_KEY","valueFrom":{"secretKeyRef":{"key":"session_key","name":"configdatamanagement-secret"}}},{"name":"PORT","value":"3001"},{"name":"GRPCPORT","value":"53001"},{"name":"POSTGRES_USER","valueFrom":{"secretKeyRef":{"key":"postgres_user","name":"configdatamanagement-secret"}}},{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"postgres_password","name":"configdatamanagement-secret"}}},{"name":"POSTGRES_HOST","valueFrom":{"secretKeyRef":{"key":"postgres_host","name":"configdatamanagement-secret"}}},{"name":"POSTGRES_DB","valueFrom":{"secretKeyRef":{"key":"postgres_db","name":"configdatamanagement-secret"}}},{"name":"POSTGRES_DB_TEST","valueFrom":{"secretKeyRef":{"key":"postgres_db_test","name":"configdatamanagement-secret"}}},{"name":"POSTGRES_PORT","valueFrom":{"secretKeyRef":{"key":"postgres_port","name":"configdatamanagement-secret"}}},{"name":"MONGO_HOST","valueFrom":{"secretKeyRef":{"key":"mongo_host","name":"configdatamanagement-secret"}}},{"name":"MONGO_PORT","valueFrom":{"secretKeyRef":{"key":"mongo_port","name":"configdatamanagement-secret"}}},{"name":"MONGO_DB","valueFrom":{"secretKeyRef":{"key":"mongo_db","name":"configdatamanagement-secret"}}},{"name":"MONGO_DB_TEST","valueFrom":{"secretKeyRef":{"key":"mongo_db_test","name":"configdatamanagement-secret"}}},{"name":"AZURE_STORAGE_ACCOUNT","valueFrom":{"secretKeyRef":{"key":"azure_storage_account","name":"configdatamanagement-secret"}}},{"name":"AZURE_STORAGE_ACCESS_KEY","valueFrom":{"secretKeyRef":{"key":"azure_storage_access_key","name":"configdatamanagement-secret"}}},{"name":"PUBLIC_STORAGE","value":"/data/public-files"},{"name":"PRIVATE_STORAGE","value":"/data/private-files"},{"name":"TAXONOMIES_STORAGE","value":"/data/files"},{"name":"CSV_STORAGE","value":"/data/csv"}],"image":"dwproductionus.azurecr.io/configdatamanagementservice","name":"configdatamanagementservice","ports":[{"containerPort":53001,"protocol":"TCP"},{"containerPort":3003,"name":"datamanagement","protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data","name":"data"}]}],"imagePullSecrets":[{"name":"dwproductionus9082ae7e-auth"}],"volumes":[{"azureFile":{"secretName":"dwk8sdatastorage-secret","shareName":"data"},"name":"data"}]}}}}
+    creationTimestamp: "2020-08-19T09:46:22Z"
+    generation: 231
+    name: configdatamanagementservice
+    namespace: dataworks
+    resourceVersion: "83807802"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/configdatamanagementservice
+    uid: 1ac4ea11-e947-4bb9-8e24-6ad1577ddbe8
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: configdatamanagementservice
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: configdatamanagementservice
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                key: redis_host
+                name: configdatamanagement-secret
+          - name: REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                key: redis_port
+                name: configdatamanagement-secret
+          - name: JWT
+            valueFrom:
+              secretKeyRef:
+                key: jwt
+                name: configdatamanagement-secret
+          - name: SESSION_KEY
+            valueFrom:
+              secretKeyRef:
+                key: session_key
+                name: configdatamanagement-secret
+          - name: PORT
+            value: "3001"
+          - name: GRPCPORT
+            value: "53001"
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: postgres_user
+                name: configdatamanagement-secret
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgres_password
+                name: configdatamanagement-secret
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                key: postgres_host
+                name: configdatamanagement-secret
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                key: postgres_db
+                name: configdatamanagement-secret
+          - name: POSTGRES_DB_TEST
+            valueFrom:
+              secretKeyRef:
+                key: postgres_db_test
+                name: configdatamanagement-secret
+          - name: POSTGRES_PORT
+            valueFrom:
+              secretKeyRef:
+                key: postgres_port
+                name: configdatamanagement-secret
+          - name: MONGO_HOST
+            valueFrom:
+              secretKeyRef:
+                key: mongo_host
+                name: configdatamanagement-secret
+          - name: MONGO_PORT
+            valueFrom:
+              secretKeyRef:
+                key: mongo_port
+                name: configdatamanagement-secret
+          - name: MONGO_DB
+            valueFrom:
+              secretKeyRef:
+                key: mongo_db
+                name: configdatamanagement-secret
+          - name: MONGO_DB_TEST
+            valueFrom:
+              secretKeyRef:
+                key: mongo_db_test
+                name: configdatamanagement-secret
+          - name: AZURE_STORAGE_ACCOUNT
+            valueFrom:
+              secretKeyRef:
+                key: azure_storage_account
+                name: configdatamanagement-secret
+          - name: AZURE_STORAGE_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: azure_storage_access_key
+                name: configdatamanagement-secret
+          - name: PUBLIC_STORAGE
+            value: /data/public-files
+          - name: PRIVATE_STORAGE
+            value: /data/private-files
+          - name: TAXONOMIES_STORAGE
+            value: /data/files
+          - name: CSV_STORAGE
+            value: /data/csv
+          image: dwproductionus.azurecr.io/config-data-management-service:298
+          imagePullPolicy: Always
+          name: configdatamanagementservice
+          ports:
+          - containerPort: 53001
+            protocol: TCP
+          - containerPort: 3003
+            name: datamanagement
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: dwproductionus9082ae7e-auth
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-06-17T15:41:30Z"
+      lastUpdateTime: "2021-06-17T15:41:30Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-03-15T21:00:11Z"
+      lastUpdateTime: "2021-06-17T15:55:38Z"
+      message: ReplicaSet "configdatamanagementservice-7bc8788f4" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 231
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "54"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"dashboardui","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"dashboardui"}},"template":{"metadata":{"labels":{"app":"dashboardui"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/dashboardui","name":"dashboardui","ports":[{"containerPort":3000,"name":"dashboardui"}]}],"imagePullSecrets":[{"name":"dwproductionus9082ae7e-auth"}]}}}}
+    creationTimestamp: "2021-04-02T14:24:47Z"
+    generation: 54
+    name: dashboardui
+    namespace: dataworks
+    resourceVersion: "83417798"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/dashboardui
+    uid: bf5abe33-2c7c-47bf-ba79-198d5cca7264
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: dashboardui
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: dashboardui
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/dashboard-ui:294
+          imagePullPolicy: Always
+          name: dashboardui
+          ports:
+          - containerPort: 3000
+            name: dashboardui
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: dwproductionus9082ae7e-auth
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-04-21T20:22:08Z"
+      lastUpdateTime: "2021-04-21T20:22:08Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-04-02T14:24:47Z"
+      lastUpdateTime: "2021-06-16T12:32:36Z"
+      message: ReplicaSet "dashboardui-fb7fbc89b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 54
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"forward-proxy"},"name":"forward-proxy","namespace":"dataworks"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"forward-proxy"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"forward-proxy"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/forward-proxy:1.0.4","imagePullPolicy":"IfNotPresent","name":"forward-proxy","ports":[{"containerPort":8100,"name":"port8100","protocol":"TCP"},{"containerPort":8101,"name":"port8101","protocol":"TCP"},{"containerPort":8102,"name":"port8102","protocol":"TCP"},{"containerPort":8103,"name":"port8103","protocol":"TCP"},{"containerPort":8104,"name":"port8104","protocol":"TCP"},{"containerPort":8105,"name":"port8105","protocol":"TCP"},{"containerPort":8106,"name":"port8106","protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T09:54:02Z"
+    generation: 2
+    labels:
+      app: forward-proxy
+    name: forward-proxy
+    namespace: dataworks
+    resourceVersion: "45450051"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/forward-proxy
+    uid: 3e2411f6-9578-4635-ac44-20e5b77b91f0
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: forward-proxy
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: forward-proxy
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/forward-proxy:1.0.4
+          imagePullPolicy: IfNotPresent
+          name: forward-proxy
+          ports:
+          - containerPort: 8100
+            name: port8100
+            protocol: TCP
+          - containerPort: 8101
+            name: port8101
+            protocol: TCP
+          - containerPort: 8102
+            name: port8102
+            protocol: TCP
+          - containerPort: 8103
+            name: port8103
+            protocol: TCP
+          - containerPort: 8104
+            name: port8104
+            protocol: TCP
+          - containerPort: 8105
+            name: port8105
+            protocol: TCP
+          - containerPort: 8106
+            name: port8106
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2021-02-23T11:02:03Z"
+      lastUpdateTime: "2021-02-23T11:02:03Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-02-23T11:02:03Z"
+      lastUpdateTime: "2021-02-23T11:02:03Z"
+      message: ReplicaSet "forward-proxy-85687bdcd9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"grafana","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"pulsar","component":"grafana"}},"template":{"metadata":{"labels":{"app":"pulsar","component":"grafana"}},"spec":{"containers":[{"env":[{"name":"PROMETHEUS_URL","value":"http://prometheus1:9090/"}],"image":"apachepulsar/pulsar-grafana:latest","name":"grafana","ports":[{"containerPort":3000}]}]}}}}
+    creationTimestamp: "2020-08-19T06:47:52Z"
+    generation: 2
+    name: grafana
+    namespace: dataworks
+    resourceVersion: "49335099"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/grafana
+    uid: c25f78ce-144d-457f-80f6-bc9beecb3ec2
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: pulsar
+        component: grafana
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: pulsar
+          component: grafana
+      spec:
+        containers:
+        - env:
+          - name: PROMETHEUS_URL
+            value: http://prometheus1:9090/
+          image: apachepulsar/pulsar-grafana:latest
+          imagePullPolicy: Always
+          name: grafana
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2020-08-19T06:47:52Z"
+      lastUpdateTime: "2020-08-19T06:48:10Z"
+      message: ReplicaSet "grafana-55859df856" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-03-06T12:03:48Z"
+      lastUpdateTime: "2021-03-06T12:03:48Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "16"
+    creationTimestamp: "2020-10-07T10:03:44Z"
+    generation: 18
+    labels:
+      app: indexingservice
+    name: indexingservice
+    namespace: dataworks
+    resourceVersion: "87852027"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/indexingservice
+    uid: bc7c2f70-1466-4021-b4b3-7f01c8c6dc53
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: indexingservice
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: indexingservice
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "1323"
+          - name: MONGO_HOST
+            value: mongodb
+          - name: MONGO_PORT
+            value: "27017"
+          - name: MONGO_DB
+            value: merit
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_DB
+            value: dataworks
+          - name: POSTGRES_HOST
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          - name: TAXONOMIES_STORAGE
+            value: /data/files
+          - name: SLACK_HOST
+            value: slack-service
+          - name: SLACK_PORT
+            value: "53007"
+          image: dwproductionus.azurecr.io/indexing-service:1.0.13
+          imagePullPolicy: IfNotPresent
+          name: indexingservice
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+          - mountPath: /files
+            name: public-files
+          - mountPath: /private-files
+            name: private-files
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: dwproduction8748cee1-auth
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: public-files
+          persistentVolumeClaim:
+            claimName: public-files
+        - name: private-files
+          persistentVolumeClaim:
+            claimName: private-files
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-10-07T10:03:45Z"
+      lastUpdateTime: "2021-05-18T14:20:55Z"
+      message: ReplicaSet "indexingservice-7f466bf964" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-29T11:16:22Z"
+      lastUpdateTime: "2021-06-29T11:16:22Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 18
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-04-18T17:43:08Z"
+    generation: 1
+    name: jaeger-operator
+    namespace: dataworks
+    resourceVersion: "64620888"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/jaeger-operator
+    uid: 165d1dca-837f-4672-8b04-b22773d8c56f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        name: jaeger-operator
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: jaeger-operator
+      spec:
+        containers:
+        - args:
+          - start
+          env:
+          - name: WATCH_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: OPERATOR_NAME
+            value: jaeger-operator
+          image: jaegertracing/jaeger-operator:1.22.0
+          imagePullPolicy: Always
+          name: jaeger-operator
+          ports:
+          - containerPort: 8383
+            name: http-metrics
+            protocol: TCP
+          - containerPort: 8686
+            name: cr-metrics
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: jaeger-operator
+        serviceAccountName: jaeger-operator
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-04-18T17:43:08Z"
+      lastUpdateTime: "2021-04-18T17:43:24Z"
+      message: ReplicaSet "jaeger-operator-fdd88dd95" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:22:33Z"
+      lastUpdateTime: "2021-04-21T20:22:33Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"merit-nginx-gateway"},"name":"merit-nginx-gateway","namespace":"dataworks"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"merit-nginx-gateway"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"merit-nginx-gateway"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/merit-nginx-gateway:v1.07","imagePullPolicy":"IfNotPresent","name":"merit-nginx-gateway","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T10:12:15Z"
+    generation: 3
+    labels:
+      app: merit-nginx-gateway
+    name: merit-nginx-gateway
+    namespace: dataworks
+    resourceVersion: "64621040"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/merit-nginx-gateway
+    uid: 13e0f5e6-67b4-4045-8b18-e963ee6f11ab
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: merit-nginx-gateway
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: merit-nginx-gateway
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/merit-nginx-gateway:v1.07
+          imagePullPolicy: IfNotPresent
+          name: merit-nginx-gateway
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-26T11:21:26Z"
+      lastUpdateTime: "2020-08-26T11:21:26Z"
+      message: ReplicaSet "merit-nginx-gateway-5597b79b98" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:22:45Z"
+      lastUpdateTime: "2021-04-21T20:22:45Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "18"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx-gateway"},"name":"nginx-gateway","namespace":"dataworks"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"nginx-gateway"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"nginx-gateway"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/nginx-gateway:v1.0.7","imagePullPolicy":"IfNotPresent","name":"nginx-gateway","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T10:17:09Z"
+    generation: 18
+    labels:
+      app: nginx-gateway
+    name: nginx-gateway
+    namespace: dataworks
+    resourceVersion: "71062851"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/nginx-gateway
+    uid: 1854ed03-815f-4302-91fd-43d0068cc7fd
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: nginx-gateway
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: nginx-gateway
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/nginx-gateway:v1.0.24
+          imagePullPolicy: IfNotPresent
+          name: nginx-gateway
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-04-21T20:22:44Z"
+      lastUpdateTime: "2021-04-21T20:22:44Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-08-26T13:11:52Z"
+      lastUpdateTime: "2021-05-11T09:28:39Z"
+      message: ReplicaSet "nginx-gateway-6b65797bc9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 18
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "40"
+    creationTimestamp: "2021-03-14T10:04:48Z"
+    generation: 54
+    labels:
+      app: outputfactory
+      tier: dataworks
+    name: outputfactory
+    namespace: dataworks
+    resourceVersion: "83805641"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/outputfactory
+    uid: 6bcd56ae-9aa0-4ae6-8ad7-7140652c1f38
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: outputfactory
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: outputfactory
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: OUTPUT_STORAGE
+            value: /data/csv
+          - name: PORT
+            value: "3003"
+          - name: AZURE_STORAGE_ACCOUNT
+            value: dwlake
+          - name: AZURE_STORAGE_ACCESS_KEY
+            value: gpGyht8mnaNMRixoJSa50DZH1X9OQuBHLurnWfJeM3FkF5eXcd5az/pTubIkJn3FBQfXts0FOKzJaTtSs17fmQ==
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          image: dwproductionus.azurecr.io/outputfactory:v1.48.16
+          imagePullPolicy: Always
+          name: outputfactory
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-03-14T10:04:48Z"
+      lastUpdateTime: "2021-06-03T13:37:09Z"
+      message: ReplicaSet "outputfactory-57968c4c9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-17T15:47:16Z"
+      lastUpdateTime: "2021-06-17T15:47:16Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 54
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"prometheus","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"pulsar","component":"prometheus"}},"template":{"metadata":{"labels":{"app":"pulsar","component":"prometheus"}},"spec":{"containers":[{"image":"prom/prometheus:v1.6.3","name":"prometheus","ports":[{"containerPort":9090}],"volumeMounts":[{"mountPath":"/etc/prometheus","name":"config-volume"},{"mountPath":"/prometheus","name":"data-volume"}]}],"serviceAccount":"prometheus-service-account","volumes":[{"configMap":{"name":"prometheus-config1"},"name":"config-volume"},{"name":"data-volume","persistentVolumeClaim":{"claimName":"prometheus-data-volume"}}]}}}}
+    creationTimestamp: "2020-08-19T06:46:52Z"
+    generation: 2
+    name: prometheus
+    namespace: dataworks
+    resourceVersion: "49335122"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/prometheus
+    uid: c079cefd-1a98-4b62-a6cc-3126126a7e29
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: pulsar
+        component: prometheus
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: pulsar
+          component: prometheus
+      spec:
+        containers:
+        - image: prom/prometheus:v1.6.3
+          imagePullPolicy: IfNotPresent
+          name: prometheus
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/prometheus
+            name: config-volume
+          - mountPath: /prometheus
+            name: data-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: prometheus-service-account
+        serviceAccountName: prometheus-service-account
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: prometheus-config1
+          name: config-volume
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: prometheus-data-volume
+  status:
+    conditions:
+    - lastTransitionTime: "2020-08-19T06:46:52Z"
+      lastUpdateTime: "2020-08-19T06:55:20Z"
+      message: ReplicaSet "prometheus-c7bc49c6c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-03-06T12:10:34Z"
+      lastUpdateTime: "2021-03-06T12:10:34Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"proxy-gateway"},"name":"proxy-gateway","namespace":"dataworks"},"spec":{"progressDeadlineSeconds":600,"replicas":0,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"proxy-gateway"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"proxy-gateway"}},"spec":{"containers":[{"image":"dwproductionus.azurecr.io/proxy-gateway:1.0.4","imagePullPolicy":"IfNotPresent","name":"proxy-gateway","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T10:22:50Z"
+    generation: 3
+    labels:
+      app: proxy-gateway
+    name: proxy-gateway
+    namespace: dataworks
+    resourceVersion: "45450636"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/proxy-gateway
+    uid: 75dbc7a7-7d14-4da4-a641-383af8034380
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: proxy-gateway
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: proxy-gateway
+      spec:
+        containers:
+        - image: dwproductionus.azurecr.io/proxy-gateway:1.0.4
+          imagePullPolicy: IfNotPresent
+          name: proxy-gateway
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2020-08-19T10:22:50Z"
+      lastUpdateTime: "2020-08-19T10:22:50Z"
+      message: ReplicaSet "proxy-gateway-564f9f8845" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-02-23T11:05:02Z"
+      lastUpdateTime: "2021-02-23T11:05:02Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"generation":1,"labels":{"app":"redis"},"name":"redis","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"redis"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"redis"}},"spec":{"containers":[{"image":"redis","imagePullPolicy":"IfNotPresent","name":"redis","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T05:31:47Z"
+    generation: 1
+    labels:
+      app: redis
+    name: redis
+    namespace: dataworks
+    resourceVersion: "64620412"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/redis
+    uid: 78ba54b0-34b3-4885-a6b4-615a8bb70343
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: redis
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: redis
+      spec:
+        containers:
+        - image: redis
+          imagePullPolicy: IfNotPresent
+          name: redis
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T05:31:47Z"
+      lastUpdateTime: "2020-08-19T05:31:47Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-08-19T05:31:47Z"
+      lastUpdateTime: "2020-08-19T05:31:55Z"
+      message: ReplicaSet "redis-654cc84b7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"schedulerservice","tier":"dataworks"},"name":"schedulerservice","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"schedulerservice","tier":"dataworks"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"schedulerservice","tier":"dataworks"}},"spec":{"containers":[{"image":"nginx:latest","imagePullPolicy":"Always","name":"schedulerservice","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T11:23:56Z"
+    generation: 1
+    labels:
+      app: schedulerservice
+      tier: dataworks
+    name: schedulerservice
+    namespace: dataworks
+    resourceVersion: "64620204"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/schedulerservice
+    uid: 90d66e7a-c91d-4203-bbf4-0f1817e60290
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: schedulerservice
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: schedulerservice
+          tier: dataworks
+      spec:
+        containers:
+        - image: nginx:latest
+          imagePullPolicy: Always
+          name: schedulerservice
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T11:23:56Z"
+      lastUpdateTime: "2020-08-19T11:24:02Z"
+      message: ReplicaSet "schedulerservice-69ddcb57c4" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:21:33Z"
+      lastUpdateTime: "2021-04-21T20:21:33Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2021-04-27T12:07:12Z"
+    generation: 2
+    labels:
+      app: slack-service
+    name: slack-service
+    namespace: dataworks
+    resourceVersion: "66556443"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/slack-service
+    uid: 50158ee4-dc85-4ee2-aa98-4125bc1ef2dc
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: slack-service
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: slack-service
+      spec:
+        containers:
+        - env:
+          - name: PORT
+            value: "1323"
+          image: dwproductionus.azurecr.io/slack-service:1.0.1
+          imagePullPolicy: IfNotPresent
+          name: slack-service
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+          - mountPath: /files
+            name: public-files
+          - mountPath: /private-files
+            name: private-files
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+        - name: dwproduction8748cee1-auth
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: public-files
+          persistentVolumeClaim:
+            claimName: public-files
+        - name: private-files
+          persistentVolumeClaim:
+            claimName: private-files
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-04-27T12:08:30Z"
+      lastUpdateTime: "2021-04-27T12:08:30Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-04-27T12:07:12Z"
+      lastUpdateTime: "2021-04-27T21:34:22Z"
+      message: ReplicaSet "slack-service-6cdf667964" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "64"
+    creationTimestamp: "2020-10-28T13:48:13Z"
+    generation: 120
+    labels:
+      app: statsservice
+      tier: dataworks
+    name: statsservice
+    namespace: dataworks
+    resourceVersion: "87851981"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/statsservice
+    uid: 22e9b33b-6194-493b-ba99-6ee58714d35d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: statsservice
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: statsservice
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: CRUD_SERVICE
+            value: configdatamanagementservice
+          - name: CRUD_PORT
+            value: "53001"
+          image: dwproductionus.azurecr.io/statsservice:v1.0.66
+          imagePullPolicy: Always
+          name: statsservice
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-10-28T13:48:14Z"
+      lastUpdateTime: "2021-06-24T10:06:38Z"
+      message: ReplicaSet "statsservice-594f57fc7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-29T11:16:15Z"
+      lastUpdateTime: "2021-06-29T11:16:15Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 120
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: superset
+      meta.helm.sh/release-namespace: dataworks
+    creationTimestamp: "2020-08-19T08:01:12Z"
+    generation: 2
+    labels:
+      app: superset
+      app.kubernetes.io/managed-by: Helm
+      chart: superset-0.1.0
+      heritage: Helm
+      release: superset
+    name: superset
+    namespace: dataworks
+    resourceVersion: "144537"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/superset
+    uid: 155374a5-2614-4d96-a34b-bccdb4711815
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: superset
+        release: superset
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: superset
+          release: superset
+      spec:
+        containers:
+        - command:
+          - /bin/sh
+          - -c
+          - . /app/pythonpath/superset_bootstrap.sh; /usr/bin/docker-entrypoint.sh
+          env:
+          - name: SUPERSET_PORT
+            value: "8088"
+          envFrom:
+          - secretRef:
+              name: superset-env
+          image: preset/superset:latest
+          imagePullPolicy: IfNotPresent
+          name: superset
+          ports:
+          - containerPort: 8088
+            name: http
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/pythonpath
+            name: superset-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - /bin/sh
+          - -c
+          - until nc -zv $DB_HOST $DB_PORT -w1; do echo 'waiting for db'; sleep 1;
+            done
+          envFrom:
+          - secretRef:
+              name: superset-env
+          image: busybox:latest
+          imagePullPolicy: IfNotPresent
+          name: wait-for-postgres
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsUser: 0
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: superset-config
+          secret:
+            defaultMode: 420
+            secretName: superset-config
+  status:
+    conditions:
+    - lastTransitionTime: "2020-08-19T08:01:12Z"
+      lastUpdateTime: "2020-08-19T08:02:18Z"
+      message: ReplicaSet "superset-5bdc9554d9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2020-08-19T08:07:35Z"
+      lastUpdateTime: "2020-08-19T08:07:35Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "18"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"testingservice","tier":"dataworks"},"name":"testingservice","namespace":"dataworks"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"testingservice","tier":"dataworks"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"testingservice","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"MONGO_HOST","value":"mongodb"},{"name":"pulsar_url","value":"pulsar"},{"name":"CAPTCHA_SERVICE","value":"captcha-solver"},{"name":"CAPTCHA_PORT","value":"80"}],"image":"dwproductionus.azurecr.io/merit-ext-test-serv:v1.50","imagePullPolicy":"Always","name":"testingservice","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2020-08-19T11:26:28Z"
+    generation: 18
+    labels:
+      app: testingservice
+      tier: dataworks
+    name: testingservice
+    namespace: dataworks
+    resourceVersion: "80373769"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/testingservice
+    uid: a6ffc17e-4ccd-4672-90c3-979aee9f0f74
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: testingservice
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: testingservice
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: MONGO_HOST
+            value: mongodb
+          - name: pulsar_url
+            value: pulsar
+          - name: CAPTCHA_SERVICE
+            value: captcha-solver
+          - name: CAPTCHA_PORT
+            value: "80"
+          image: dwproductionus.azurecr.io/merit-ext-test-serv:v1.69
+          imagePullPolicy: Always
+          name: testingservice
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-26T12:39:03Z"
+      lastUpdateTime: "2021-05-11T14:41:34Z"
+      message: ReplicaSet "testingservice-cf7f55c6f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-07T14:48:44Z"
+      lastUpdateTime: "2021-06-07T14:48:44Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 18
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "126"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"workerbot","tier":"dataworks"},"name":"workerbot","namespace":"dataworks"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"workerbot","tier":"dataworks"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"workerbot","tier":"dataworks"}},"spec":{"containers":[{"env":[{"name":"PROXIES_FILE","value":"app/proxies.txt"},{"name":"DASHBOARD_HOST","value":"http://meritdashboard"},{"name":"CASSANDRA_HOST","value":"cassandra"},{"name":"CASSANDRA_KEYSPACE","value":"dataworks"},{"name":"MAX_GOROUTINES","value":"10"},{"name":"PULSAR_HOST","value":"pulsar:6650"},{"name":"CAPTCHA_SERVICE","value":"captcha-solver"},{"name":"CAPTCHA_PORT","value":"80"},{"name":"REDIS_HOST","value":"redis"},{"name":"REDIS_PORT","value":"80"}],"image":"dwproductionus.azurecr.io/merit-workerbot:v1.61.7","imagePullPolicy":"Always","name":"workerbot","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/data","name":"data"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"azureFile":{"secretName":"dwk8sdatastorage-secret","shareName":"data"},"name":"data"}]}}}}
+    creationTimestamp: "2020-08-19T11:28:43Z"
+    generation: 511
+    labels:
+      app: workerbot
+      tier: dataworks
+    name: workerbot
+    namespace: dataworks
+    resourceVersion: "85435476"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/workerbot
+    uid: aad87c6c-536b-4d59-ac3c-821c93d8818d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: workerbot
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: workerbot
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: PROXIES_FILE
+            value: app/proxies.txt
+          - name: DASHBOARD_HOST
+            value: http://configdatamanagementservice/v2
+          - name: CASSANDRA_HOST
+            value: cassandra
+          - name: CASSANDRA_KEYSPACE
+            value: dataworks
+          - name: MAX_GOROUTINES
+            value: "11"
+          - name: PULSAR_HOST
+            value: pulsar:6650
+          - name: CAPTCHA_SERVICE
+            value: captcha-solver
+          - name: CAPTCHA_PORT
+            value: "80"
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: CACHE_STORAGE
+            value: /data/cache
+          - name: AZURE_STORAGE_ACCOUNT
+            value: dwlake
+          - name: AZURE_STORAGE_ACCESS_KEY
+            value: gpGyht8mnaNMRixoJSa50DZH1X9OQuBHLurnWfJeM3FkF5eXcd5az/pTubIkJn3FBQfXts0FOKzJaTtSs17fmQ==
+          image: dwproductionus.azurecr.io/merit-workerbot:v1.61.98
+          imagePullPolicy: Always
+          name: workerbot
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - azureFile:
+            secretName: dwk8sdatastorage-secret
+            shareName: data
+          name: data
+  status:
+    conditions:
+    - lastTransitionTime: "2020-11-07T12:59:19Z"
+      lastUpdateTime: "2021-06-03T13:39:51Z"
+      message: ReplicaSet "workerbot-d8fb9f458" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-20T19:23:23Z"
+      lastUpdateTime: "2021-06-20T19:23:23Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 511
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "17"
+    creationTimestamp: "2020-10-28T13:55:49Z"
+    generation: 33
+    labels:
+      app: ws-service
+      tier: dataworks
+    name: ws-service
+    namespace: dataworks
+    resourceVersion: "79325455"
+    selfLink: /apis/apps/v1/namespaces/dataworks/deployments/ws-service
+    uid: bf90d8d9-9bbe-4146-8cbf-ea2b5483f4e5
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: ws-service
+        tier: dataworks
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: ws-service
+          tier: dataworks
+      spec:
+        containers:
+        - env:
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "80"
+          - name: CRUD_SERVICE
+            value: configdatamanagementservice
+          - name: CRUD_PORT
+            value: "53001"
+          image: dwproductionus.azurecr.io/ws-service:v1.0.14
+          imagePullPolicy: Always
+          name: ws-service
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-10-28T13:55:49Z"
+      lastUpdateTime: "2021-03-23T19:50:25Z"
+      message: ReplicaSet "ws-service-56cf6fdd8b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-04T13:14:15Z"
+      lastUpdateTime: "2021-06-04T13:14:15Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 33
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      meta.helm.sh/release-name: ingress-nginx
+      meta.helm.sh/release-namespace: ingress-nginx
+    creationTimestamp: "2020-08-19T09:18:50Z"
+    generation: 2
+    labels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: ingress-nginx
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/version: 0.34.1
+      helm.sh/chart: ingress-nginx-2.11.3
+    name: ingress-nginx-controller
+    namespace: ingress-nginx
+    resourceVersion: "68134345"
+    selfLink: /apis/apps/v1/namespaces/ingress-nginx/deployments/ingress-nginx-controller
+    uid: 4ca8b4ef-53ce-4fb3-949e-8e5ebd8c88f7
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: ingress-nginx
+        app.kubernetes.io/name: ingress-nginx
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: controller
+          app.kubernetes.io/instance: ingress-nginx
+          app.kubernetes.io/name: ingress-nginx
+      spec:
+        containers:
+        - args:
+          - /nginx-ingress-controller
+          - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
+          - --election-id=ingress-controller-leader
+          - --ingress-class=nginx
+          - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+          - --validating-webhook=:8443
+          - --validating-webhook-certificate=/usr/local/certificates/cert
+          - --validating-webhook-key=/usr/local/certificates/key
+          - --tcp-services-configmap=ingress-nginx/config-forward-proxy
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          image: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller:v0.34.1@sha256:0e072dddd1f7f8fc8909a2ca6f65e76c5f0d2fcfb8be47935ae3457e8bbceb20
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /wait-shutdown
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: controller
+          ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+          - containerPort: 443
+            name: https
+            protocol: TCP
+          - containerPort: 8443
+            name: webhook
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 90Mi
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - ALL
+            runAsUser: 101
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/certificates/
+            name: webhook-cert
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: ingress-nginx
+        serviceAccountName: ingress-nginx
+        terminationGracePeriodSeconds: 300
+        volumes:
+        - name: webhook-cert
+          secret:
+            defaultMode: 420
+            secretName: ingress-nginx-admission
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-19T09:18:50Z"
+      lastUpdateTime: "2020-08-19T10:01:13Z"
+      message: ReplicaSet "ingress-nginx-controller-6bc48cf7bd" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-05-02T19:48:08Z"
+      lastUpdateTime: "2021-05-02T19:48:08Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "10"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","kubernetes.io/cluster-service":"true"},"name":"aci-connector-linux","namespace":"kube-system"},"spec":{"paused":false,"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"app":"aci-connector-linux"}},"template":{"metadata":{"annotations":{"checksum/cloud-provider-config":"8a398bd07be0e4673c34a4169b228340f9e2c38c55bd95365319bfd7fb332489","cluster-autoscaler.kubernetes.io/safe-to-evict":"true"},"labels":{"app":"aci-connector-linux","kubernetes.azure.com/managedby":"aks"}},"spec":{"affinity":{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"labelSelector":null,"matchExpressions":[{"key":"kubernetes.azure.com/cluster","operator":"Exists"}]}]}}},"containers":[{"args":["--provider","azure","--nodename","virtual-node-aci-linux","--os","Linux","--authentication-token-webhook=true","--no-verify-clients=false","--client-verify-ca=/etc/kubernetes/certs/ca.crt"],"command":["virtual-kubelet"],"env":[{"name":"KUBELET_PORT","value":"10250"},{"name":"ACS_CREDENTIAL_LOCATION","value":"/etc/acs/azure.json"},{"name":"AZURE_CLIENT_SECRET","valueFrom":{"secretKeyRef":{"key":"clientSecret","name":"aci-connector-linux"}}},{"name":"APISERVER_CERT_LOCATION","value":"/etc/virtual-kubelet/cert.pem"},{"name":"APISERVER_KEY_LOCATION","value":"/etc/virtual-kubelet/key.pem"},{"name":"VKUBELET_POD_IP","valueFrom":{"fieldRef":{"fieldPath":"status.podIP"}}},{"name":"ACI_EXTRA_USER_AGENT","value":"add-on/aks"},{"name":"ACI_SUBNET_NAME","value":"virtual-node-aci"},{"name":"MASTER_URI","value":"https://dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io"},{"name":"CLUSTER_CIDR","value":"10.240.0.0/16"},{"name":"KUBE_DNS_IP","value":"10.0.0.10"},{"name":"VIRTUALNODE_USER_IDENTITY_CLIENTID","value":null}],"image":"mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.3.5","name":"aci-connector-linux","volumeMounts":[{"mountPath":"/etc/kubernetes/certs","name":"certificates","readOnly":true},{"mountPath":"/etc/virtual-kubelet","name":"credentials"},{"mountPath":"/etc/acs/azure.json","name":"aks-credential"}]}],"nodeSelector":{"beta.kubernetes.io/os":"linux"},"priorityClassName":"system-node-critical","serviceAccountName":"aci-connector-linux","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"}],"volumes":[{"hostPath":{"path":"/etc/kubernetes/certs"},"name":"certificates"},{"name":"credentials","secret":{"secretName":"aci-connector-linux"}},{"hostPath":{"path":"/etc/kubernetes/azure.json","type":"File"},"name":"aks-credential"}]}}}}
+    creationTimestamp: "2020-08-18T13:53:05Z"
+    generation: 11
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      kubernetes.io/cluster-service: "true"
+    name: aci-connector-linux
+    namespace: kube-system
+    resourceVersion: "64620866"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/aci-connector-linux
+    uid: 0b8df914-14ba-4b01-bd2f-ee7f14fd9aff
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: aci-connector-linux
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          checksum/cloud-provider-config: 8a398bd07be0e4673c34a4169b228340f9e2c38c55bd95365319bfd7fb332489
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        creationTimestamp: null
+        labels:
+          app: aci-connector-linux
+          kubernetes.azure.com/managedby: aks
+      spec:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/cluster
+                  operator: Exists
+        containers:
+        - args:
+          - --provider
+          - azure
+          - --nodename
+          - virtual-node-aci-linux
+          - --os
+          - Linux
+          - --authentication-token-webhook=true
+          - --no-verify-clients=false
+          - --client-verify-ca=/etc/kubernetes/certs/ca.crt
+          command:
+          - virtual-kubelet
+          env:
+          - name: KUBELET_PORT
+            value: "10250"
+          - name: ACS_CREDENTIAL_LOCATION
+            value: /etc/acs/azure.json
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: clientSecret
+                name: aci-connector-linux
+          - name: APISERVER_CERT_LOCATION
+            value: /etc/virtual-kubelet/cert.pem
+          - name: APISERVER_KEY_LOCATION
+            value: /etc/virtual-kubelet/key.pem
+          - name: VKUBELET_POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
+          - name: ACI_EXTRA_USER_AGENT
+            value: add-on/aks
+          - name: ACI_SUBNET_NAME
+            value: virtual-node-aci
+          - name: MASTER_URI
+            value: https://dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io
+          - name: CLUSTER_CIDR
+            value: 10.240.0.0/16
+          - name: KUBE_DNS_IP
+            value: 10.0.0.10
+          - name: VIRTUALNODE_USER_IDENTITY_CLIENTID
+          image: mcr.microsoft.com/oss/virtual-kubelet/virtual-kubelet:1.3.5
+          imagePullPolicy: IfNotPresent
+          name: aci-connector-linux
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/kubernetes/certs
+            name: certificates
+            readOnly: true
+          - mountPath: /etc/virtual-kubelet
+            name: credentials
+          - mountPath: /etc/acs/azure.json
+            name: aks-credential
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          beta.kubernetes.io/os: linux
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: aci-connector-linux
+        serviceAccountName: aci-connector-linux
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        volumes:
+        - hostPath:
+            path: /etc/kubernetes/certs
+            type: ""
+          name: certificates
+        - name: credentials
+          secret:
+            defaultMode: 420
+            secretName: aci-connector-linux
+        - hostPath:
+            path: /etc/kubernetes/azure.json
+            type: File
+          name: aks-credential
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-18T13:53:06Z"
+      lastUpdateTime: "2021-03-31T05:14:44Z"
+      message: ReplicaSet "aci-connector-linux-847fc68bd7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:22:31Z"
+      lastUpdateTime: "2021-04-21T20:22:31Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 11
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"kube-dns","kubernetes.io/cluster-service":"true","kubernetes.io/name":"CoreDNS","version":"v20"},"name":"coredns","namespace":"kube-system"},"spec":{"paused":false,"revisionHistoryLimit":2,"selector":{"matchLabels":{"k8s-app":"kube-dns","version":"v20"}},"strategy":{"rollingUpdate":{"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"prometheus.io/port":"9153"},"labels":{"k8s-app":"kube-dns","kubernetes.io/cluster-service":"true","version":"v20"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}]},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"k8s-app","operator":"In","values":["kube-dns"]}]},"topologyKey":"failure-domain.beta.kubernetes.io/zone"},"weight":10},{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"k8s-app","operator":"In","values":["kube-dns"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":5}]}},"containers":[{"args":["-conf","/etc/coredns/Corefile"],"image":"mcr.microsoft.com/oss/kubernetes/coredns:1.6.6","imagePullPolicy":"IfNotPresent","livenessProbe":{"failureThreshold":5,"httpGet":{"path":"/health","port":8080,"scheme":"HTTP"},"initialDelaySeconds":60,"successThreshold":1,"timeoutSeconds":5},"name":"coredns","ports":[{"containerPort":53,"name":"dns","protocol":"UDP"},{"containerPort":53,"name":"dns-tcp","protocol":"TCP"},{"containerPort":9153,"name":"metrics","protocol":"TCP"}],"readinessProbe":{"httpGet":{"path":"/ready","port":8181,"scheme":"HTTP"}},"resources":{"limits":{"memory":"500Mi"},"requests":{"cpu":"100m","memory":"70Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"add":["NET_BIND_SERVICE"],"drop":["all"]},"procMount":"Default","readOnlyRootFilesystem":true},"volumeMounts":[{"mountPath":"/etc/coredns","name":"config-volume","readOnly":true},{"mountPath":"/etc/coredns/custom","name":"custom-config-volume","readOnly":true},{"mountPath":"/tmp","name":"tmp"}]}],"dnsPolicy":"Default","nodeSelector":{"beta.kubernetes.io/os":"linux"},"priorityClassName":"system-node-critical","serviceAccountName":"coredns","tolerations":[{"effect":"NoSchedule","key":"node-role.kubernetes.io/master"},{"key":"CriticalAddonsOnly","operator":"Exists"},{"effect":"NoExecute","key":"node.kubernetes.io/unreachable","operator":"Exists","tolerationSeconds":30},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","operator":"Exists","tolerationSeconds":30}],"volumes":[{"configMap":{"items":[{"key":"Corefile","path":"Corefile"}],"name":"coredns"},"name":"config-volume"},{"configMap":{"name":"coredns-custom","optional":true},"name":"custom-config-volume"},{"emptyDir":{},"name":"tmp"}]}}}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    generation: 6
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: kube-dns
+      kubernetes.io/cluster-service: "true"
+      kubernetes.io/name: CoreDNS
+      version: v20
+    name: coredns
+    namespace: kube-system
+    resourceVersion: "70659180"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/coredns
+    uid: f68401fa-5cb7-4ac3-a36a-1e8815d83da3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 5
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        k8s-app: kube-dns
+        version: v20
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/port: "9153"
+        creationTimestamp: null
+        labels:
+          k8s-app: kube-dns
+          kubernetes.io/cluster-service: "true"
+          version: v20
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: k8s-app
+                    operator: In
+                    values:
+                    - kube-dns
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 10
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: k8s-app
+                    operator: In
+                    values:
+                    - kube-dns
+                topologyKey: kubernetes.io/hostname
+              weight: 5
+        containers:
+        - args:
+          - -conf
+          - /etc/coredns/Corefile
+          image: mcr.microsoft.com/oss/kubernetes/coredns:1.6.6
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: coredns
+          ports:
+          - containerPort: 53
+            name: dns
+            protocol: UDP
+          - containerPort: 53
+            name: dns-tcp
+            protocol: TCP
+          - containerPort: 9153
+            name: metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 8181
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 70Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            procMount: Default
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/coredns
+            name: config-volume
+            readOnly: true
+          - mountPath: /etc/coredns/custom
+            name: custom-config-volume
+            readOnly: true
+          - mountPath: /tmp
+            name: tmp
+        dnsPolicy: Default
+        nodeSelector:
+          beta.kubernetes.io/os: linux
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: coredns
+        serviceAccountName: coredns
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 30
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: Corefile
+              path: Corefile
+            name: coredns
+          name: config-volume
+        - configMap:
+            defaultMode: 420
+            name: coredns-custom
+            optional: true
+          name: custom-config-volume
+        - emptyDir: {}
+          name: tmp
+  status:
+    availableReplicas: 5
+    conditions:
+    - lastTransitionTime: "2021-05-02T19:09:56Z"
+      lastUpdateTime: "2021-05-02T19:09:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-08-18T13:53:06Z"
+      lastUpdateTime: "2021-05-10T05:07:58Z"
+      message: ReplicaSet "coredns-5f77fc5965" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 6
+    readyReplicas: 5
+    replicas: 5
+    updatedReplicas: 5
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"coredns-autoscaler","kubernetes.io/cluster-service":"true"},"name":"coredns-autoscaler","namespace":"kube-system"},"spec":{"paused":false,"revisionHistoryLimit":2,"selector":{"matchLabels":{"k8s-app":"coredns-autoscaler"}},"template":{"metadata":{"annotations":{"cluster-autoscaler.kubernetes.io/safe-to-evict":"true","seccomp.security.alpha.kubernetes.io/pod":"runtime/default"},"labels":{"k8s-app":"coredns-autoscaler"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}]}},"containers":[{"command":["/cluster-proportional-autoscaler","--namespace=kube-system","--configmap=coredns-autoscaler","--target=deployment/coredns","--default-params={\"ladder\":{\"coresToReplicas\":[[1,2],[512,3],[1024,4],[2048,5]],\"nodesToReplicas\":[[1,2],[8,3],[16,4],[32,5]]}}","--logtostderr=true","--v=2"],"image":"mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1-hotfix.20200403","livenessProbe":{"httpGet":{"path":"/last-poll","port":8080},"initialDelaySeconds":10,"periodSeconds":10},"name":"autoscaler","resources":{"requests":{"cpu":"20m","memory":"10Mi"}}}],"dnsPolicy":"Default","nodeSelector":{"beta.kubernetes.io/os":"linux"},"priorityClassName":"system-node-critical","serviceAccountName":"coredns-autoscaler","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"},{"effect":"NoExecute","key":"node.kubernetes.io/unreachable","operator":"Exists","tolerationSeconds":30},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","operator":"Exists","tolerationSeconds":30}]}}}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    generation: 3
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: coredns-autoscaler
+      kubernetes.io/cluster-service: "true"
+    name: coredns-autoscaler
+    namespace: kube-system
+    resourceVersion: "68126877"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/coredns-autoscaler
+    uid: ef48b469-19bb-4427-97f4-12b36e17b538
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        k8s-app: coredns-autoscaler
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+          seccomp.security.alpha.kubernetes.io/pod: runtime/default
+        creationTimestamp: null
+        labels:
+          k8s-app: coredns-autoscaler
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+        containers:
+        - command:
+          - /cluster-proportional-autoscaler
+          - --namespace=kube-system
+          - --configmap=coredns-autoscaler
+          - --target=deployment/coredns
+          - --default-params={"ladder":{"coresToReplicas":[[1,2],[512,3],[1024,4],[2048,5]],"nodesToReplicas":[[1,2],[8,3],[16,4],[32,5]]}}
+          - --logtostderr=true
+          - --v=2
+          image: mcr.microsoft.com/oss/kubernetes/autoscaler/cluster-proportional-autoscaler:1.7.1-hotfix.20200403
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /last-poll
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: autoscaler
+          resources:
+            requests:
+              cpu: 20m
+              memory: 10Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: Default
+        nodeSelector:
+          beta.kubernetes.io/os: linux
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: coredns-autoscaler
+        serviceAccountName: coredns-autoscaler
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 30
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-18T13:53:06Z"
+      lastUpdateTime: "2020-12-16T05:10:13Z"
+      message: ReplicaSet "coredns-autoscaler-66c578cddb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-05-02T19:09:52Z"
+      lastUpdateTime: "2021-05-02T19:09:52Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"dashboard-metrics-scraper"},"name":"dashboard-metrics-scraper","namespace":"kube-system"},"spec":{"paused":false,"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"k8s-app":"dashboard-metrics-scraper"}},"template":{"metadata":{"annotations":{"cluster-autoscaler.kubernetes.io/safe-to-evict":"true","seccomp.security.alpha.kubernetes.io/pod":"runtime/default"},"labels":{"k8s-app":"dashboard-metrics-scraper"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.azure.com/cluster","operator":"Exists"},{"key":"type","operator":"NotIn","values":["virtual-kubelet"]},{"key":"beta.kubernetes.io/os","operator":"In","values":["linux"]}]}]}}},"containers":[{"image":"mcr.microsoft.com/oss/kubernetes/metrics-scraper:v1.0.4","livenessProbe":{"httpGet":{"path":"/","port":8000,"scheme":"HTTP"},"initialDelaySeconds":30,"timeoutSeconds":30},"name":"dashboard-metrics-scraper","ports":[{"containerPort":8000,"protocol":"TCP"}],"resources":{"limits":{"cpu":"100m","memory":"500Mi"},"requests":{"cpu":"100m","memory":"50Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"runAsGroup":2001,"runAsUser":1001},"volumeMounts":[{"mountPath":"/tmp","name":"tmp-volume"}]}],"priorityClassName":"system-node-critical","serviceAccountName":"kubernetes-dashboard","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"}],"volumes":[{"emptyDir":{},"name":"tmp-volume"}]}}}}
+    creationTimestamp: "2020-08-18T13:53:07Z"
+    generation: 4
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: dashboard-metrics-scraper
+    name: dashboard-metrics-scraper
+    namespace: kube-system
+    resourceVersion: "64620493"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/dashboard-metrics-scraper
+    uid: 93a9e1ae-7eea-4e3c-95a0-3d6f03068dd4
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        k8s-app: dashboard-metrics-scraper
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+          seccomp.security.alpha.kubernetes.io/pod: runtime/default
+        creationTimestamp: null
+        labels:
+          k8s-app: dashboard-metrics-scraper
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/cluster
+                  operator: Exists
+                - key: type
+                  operator: NotIn
+                  values:
+                  - virtual-kubelet
+                - key: beta.kubernetes.io/os
+                  operator: In
+                  values:
+                  - linux
+        containers:
+        - image: mcr.microsoft.com/oss/kubernetes/metrics-scraper:v1.0.4
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          name: dashboard-metrics-scraper
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 50Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp-volume
+        dnsPolicy: ClusterFirst
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: kubernetes-dashboard
+        serviceAccountName: kubernetes-dashboard
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        volumes:
+        - emptyDir: {}
+          name: tmp-volume
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-18T13:53:07Z"
+      lastUpdateTime: "2021-02-23T12:57:31Z"
+      message: ReplicaSet "dashboard-metrics-scraper-6f5fb5c4f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-04-21T20:22:03Z"
+      lastUpdateTime: "2021-04-21T20:22:03Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 4
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"kubernetes-dashboard"},"name":"kubernetes-dashboard","namespace":"kube-system"},"spec":{"paused":false,"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"k8s-app":"kubernetes-dashboard"}},"strategy":{"rollingUpdate":{"maxSurge":0,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"cluster-autoscaler.kubernetes.io/safe-to-evict":"true"},"labels":{"k8s-app":"kubernetes-dashboard"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.azure.com/cluster","operator":"Exists"},{"key":"type","operator":"NotIn","values":["virtual-kubelet"]},{"key":"beta.kubernetes.io/os","operator":"In","values":["linux"]}]}]}}},"containers":[{"args":["--auto-generate-certificates","--namespace=kube-system"],"image":"mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.0-rc7","livenessProbe":{"httpGet":{"path":"/","port":8443,"scheme":"HTTPS"},"initialDelaySeconds":30,"timeoutSeconds":30},"name":"kubernetes-dashboard","ports":[{"containerPort":8443,"protocol":"TCP"}],"resources":{"limits":{"cpu":"100m","memory":"500Mi"},"requests":{"cpu":"100m","memory":"50Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"runAsGroup":2001,"runAsUser":1001},"volumeMounts":[{"mountPath":"/certs","name":"kubernetes-dashboard-certs"},{"mountPath":"/tmp","name":"tmp-volume"}]}],"serviceAccountName":"kubernetes-dashboard","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"}],"volumes":[{"name":"kubernetes-dashboard-certs","secret":{"secretName":"kubernetes-dashboard-certs"}},{"emptyDir":{},"name":"tmp-volume"}]}}}}
+    creationTimestamp: "2020-08-18T13:53:07Z"
+    generation: 4
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: kubernetes-dashboard
+    name: kubernetes-dashboard
+    namespace: kube-system
+    resourceVersion: "83258322"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/kubernetes-dashboard
+    uid: c5f7b152-6ea3-4220-ae9d-129beaeb03b9
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        k8s-app: kubernetes-dashboard
+    strategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        creationTimestamp: null
+        labels:
+          k8s-app: kubernetes-dashboard
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/cluster
+                  operator: Exists
+                - key: type
+                  operator: NotIn
+                  values:
+                  - virtual-kubelet
+                - key: beta.kubernetes.io/os
+                  operator: In
+                  values:
+                  - linux
+        containers:
+        - args:
+          - --auto-generate-certificates
+          - --namespace=kube-system
+          image: mcr.microsoft.com/oss/kubernetes/dashboard:v2.0.0-rc7
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          name: kubernetes-dashboard
+          ports:
+          - containerPort: 8443
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 50Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /certs
+            name: kubernetes-dashboard-certs
+          - mountPath: /tmp
+            name: tmp-volume
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: kubernetes-dashboard
+        serviceAccountName: kubernetes-dashboard
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        volumes:
+        - name: kubernetes-dashboard-certs
+          secret:
+            defaultMode: 420
+            secretName: kubernetes-dashboard-certs
+        - emptyDir: {}
+          name: tmp-volume
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-18T13:53:07Z"
+      lastUpdateTime: "2020-08-18T13:53:07Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-02-23T13:11:32Z"
+      lastUpdateTime: "2021-02-23T13:11:32Z"
+      message: ReplicaSet "kubernetes-dashboard-849d5c99ff" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 4
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"metrics-server","kubernetes.io/cluster-service":"true"},"name":"metrics-server","namespace":"kube-system"},"spec":{"paused":false,"revisionHistoryLimit":2,"selector":{"matchLabels":{"k8s-app":"metrics-server"}},"template":{"metadata":{"labels":{"k8s-app":"metrics-server"},"name":"metrics-server"},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"labelSelector":null,"matchExpressions":[{"key":"kubernetes.azure.com/cluster","operator":"Exists"}]}]}}},"containers":[{"command":["/metrics-server","--kubelet-insecure-tls","--kubelet-preferred-address-types=InternalIP","--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"],"image":"mcr.microsoft.com/oss/kubernetes/metrics-server:v0.3.6","imagePullPolicy":"IfNotPresent","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":443,"scheme":"HTTPS"},"initialDelaySeconds":20,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1},"name":"metrics-server","readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":443,"scheme":"HTTPS"},"initialDelaySeconds":20,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1},"resources":{"requests":{"cpu":"44m","memory":"55Mi"}}}],"nodeSelector":{"beta.kubernetes.io/os":"linux"},"priorityClassName":"system-node-critical","serviceAccountName":"metrics-server","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"},{"effect":"NoExecute","key":"node.kubernetes.io/unreachable","operator":"Exists","tolerationSeconds":30},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","operator":"Exists","tolerationSeconds":30}]}}}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    generation: 4
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: metrics-server
+      kubernetes.io/cluster-service: "true"
+    name: metrics-server
+    namespace: kube-system
+    resourceVersion: "82973864"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/metrics-server
+    uid: 4e4d618d-3032-4715-8559-eb19024eddd3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        k8s-app: metrics-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          k8s-app: metrics-server
+        name: metrics-server
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/cluster
+                  operator: Exists
+        containers:
+        - command:
+          - /metrics-server
+          - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP
+          - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          image: mcr.microsoft.com/oss/kubernetes/metrics-server:v0.3.6
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: metrics-server
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 44m
+              memory: 55Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          beta.kubernetes.io/os: linux
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: metrics-server
+        serviceAccountName: metrics-server
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 30
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-08-18T13:53:06Z"
+      lastUpdateTime: "2020-12-16T05:10:36Z"
+      message: ReplicaSet "metrics-server-7f5b4f6d8c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2021-06-15T05:23:14Z"
+      lastUpdateTime: "2021-06-15T05:23:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 4
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "10"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","component":"tunnel","kubernetes.io/cluster-service":"true","tier":"node"},"name":"tunnelfront","namespace":"kube-system"},"spec":{"paused":false,"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"component":"tunnel"}},"template":{"metadata":{"labels":{"component":"tunnel"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"In","values":["system"]}]},"weight":100}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"labelSelector":null,"matchExpressions":[{"key":"kubernetes.azure.com/cluster","operator":"Exists"}]}]}}},"containers":[{"env":[{"name":"OVERRIDE_TUNNEL_SERVER_NAME","value":"dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io"},{"name":"KUBE_CONFIG","value":"/etc/kubernetes/kubeconfig/kubeconfig"}],"image":"mcr.microsoft.com/aks/hcp/hcp-tunnel-front:master.210427.1","imagePullPolicy":"IfNotPresent","livenessProbe":{"exec":{"command":["/lib/tunnel-front/check-tunnel-connection.sh"]},"failureThreshold":12,"initialDelaySeconds":10,"periodSeconds":60},"name":"tunnel-front","resources":{"requests":{"cpu":"10m","memory":"64Mi"}},"securityContext":{"privileged":true},"volumeMounts":[{"mountPath":"/etc/kubernetes/kubeconfig","name":"kubeconfig","readOnly":true},{"mountPath":"/etc/kubernetes/tunnelfront-tls","name":"tunnelfront-tls","readOnly":true},{"mountPath":"/etc/kubernetes/certs","name":"certificates","readOnly":true}]}],"dnsPolicy":"Default","nodeSelector":{"beta.kubernetes.io/os":"linux"},"priorityClassName":"system-node-critical","serviceAccountName":"tunnelfront","tolerations":[{"key":"CriticalAddonsOnly","operator":"Exists"},{"effect":"NoExecute","key":"node.kubernetes.io/unreachable","operator":"Exists","tolerationSeconds":30},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","operator":"Exists","tolerationSeconds":30}],"volumes":[{"configMap":{"name":"tunnelfront-kubecfg","optional":true},"name":"kubeconfig"},{"name":"tunnelfront-tls","secret":{"optional":true,"secretName":"tunnelfront-tls"}},{"hostPath":{"path":"/etc/kubernetes/certs"},"name":"certificates"}]}}}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    generation: 11
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      component: tunnel
+      kubernetes.io/cluster-service: "true"
+      tier: node
+    name: tunnelfront
+    namespace: kube-system
+    resourceVersion: "74764122"
+    selfLink: /apis/apps/v1/namespaces/kube-system/deployments/tunnelfront
+    uid: 846f966c-653a-46ad-8beb-ce9ef7352b36
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        component: tunnel
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: tunnel
+      spec:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: In
+                  values:
+                  - system
+              weight: 100
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/cluster
+                  operator: Exists
+        containers:
+        - env:
+          - name: OVERRIDE_TUNNEL_SERVER_NAME
+            value: dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io
+          - name: KUBE_CONFIG
+            value: /etc/kubernetes/kubeconfig/kubeconfig
+          image: mcr.microsoft.com/aks/hcp/hcp-tunnel-front:master.210427.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - /lib/tunnel-front/check-tunnel-connection.sh
+            failureThreshold: 12
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: tunnel-front
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/kubernetes/kubeconfig
+            name: kubeconfig
+            readOnly: true
+          - mountPath: /etc/kubernetes/tunnelfront-tls
+            name: tunnelfront-tls
+            readOnly: true
+          - mountPath: /etc/kubernetes/certs
+            name: certificates
+            readOnly: true
+        dnsPolicy: Default
+        nodeSelector:
+          beta.kubernetes.io/os: linux
+        priorityClassName: system-node-critical
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: tunnelfront
+        serviceAccountName: tunnelfront
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 30
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: tunnelfront-kubecfg
+            optional: true
+          name: kubeconfig
+        - name: tunnelfront-tls
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: tunnelfront-tls
+        - hostPath:
+            path: /etc/kubernetes/certs
+            type: ""
+          name: certificates
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-05-02T19:09:57Z"
+      lastUpdateTime: "2021-05-02T19:09:57Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-08-18T13:53:06Z"
+      lastUpdateTime: "2021-05-22T05:18:11Z"
+      message: ReplicaSet "tunnelfront-866b869f9d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 11
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2021-06-26T05:32:07Z"
+    generation: 1
+    labels:
+      component: velero
+    name: velero
+    namespace: velero
+    resourceVersion: "86736667"
+    selfLink: /apis/apps/v1/namespaces/velero/deployments/velero
+    uid: 25a4f50c-98ac-4627-a562-52477865b9ea
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deploy: velero
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "8085"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          component: velero
+          deploy: velero
+      spec:
+        containers:
+        - args:
+          - server
+          - --features=
+          command:
+          - /velero
+          env:
+          - name: VELERO_SCRATCH_DIR
+            value: /scratch
+          - name: VELERO_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: LD_LIBRARY_PATH
+            value: /plugins
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /credentials/cloud
+          - name: AWS_SHARED_CREDENTIALS_FILE
+            value: /credentials/cloud
+          - name: AZURE_CREDENTIALS_FILE
+            value: /credentials/cloud
+          - name: ALIBABA_CLOUD_CREDENTIALS_FILE
+            value: /credentials/cloud
+          image: velero/velero:v1.5.1
+          imagePullPolicy: IfNotPresent
+          name: velero
+          ports:
+          - containerPort: 8085
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: 500m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /plugins
+            name: plugins
+          - mountPath: /scratch
+            name: scratch
+          - mountPath: /credentials
+            name: cloud-credentials
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - image: velero/velero-plugin-for-aws:v1.2.0
+          imagePullPolicy: IfNotPresent
+          name: velero-plugin-for-aws
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /target
+            name: plugins
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: velero
+        serviceAccountName: velero
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: plugins
+        - emptyDir: {}
+          name: scratch
+        - name: cloud-credentials
+          secret:
+            defaultMode: 420
+            secretName: cloud-credentials
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2021-06-26T05:32:11Z"
+      lastUpdateTime: "2021-06-26T05:32:11Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-06-26T05:32:07Z"
+      lastUpdateTime: "2021-06-26T05:32:11Z"
+      message: ReplicaSet "velero-6487b8b46c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

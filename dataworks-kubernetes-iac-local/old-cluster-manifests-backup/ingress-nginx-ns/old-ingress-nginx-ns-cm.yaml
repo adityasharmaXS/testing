@@ -1,0 +1,420 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2021-04-18T17:43:24Z"
+    name: jaeger-operator-lock
+    namespace: dataworks
+    ownerReferences:
+    - apiVersion: v1
+      kind: Pod
+      name: jaeger-operator-fdd88dd95-wr79d
+      uid: 0068a13d-08a5-4950-a151-4a90ae276ef0
+    resourceVersion: "63595201"
+    selfLink: /api/v1/namespaces/dataworks/configmaps/jaeger-operator-lock
+    uid: 396ceac1-7a4e-478c-8a79-80f4621bcb77
+- apiVersion: v1
+  data:
+    prometheus.yml: |
+      global:
+          scrape_interval: 15s
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['localhost:9090']
+        - job_name: 'kubernetes-pods'
+          kubernetes_sd_configs:
+            - role: pod
+        - job_name: kafkaesque-service
+          scrape_interval: 30s
+          scrape_timeout: 10s
+          metrics_path: /pulsarmetrics
+          scheme: https
+          static_configs:
+          - targets:
+            - uscentral1.azure.kafkaesque.io:8964
+          bearer_token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtZXJpdC10aGVkYXRhd29ya3MtY29tLWNsaWVudC01ZWIyZGZkYjYyMjQxIn0.AExoesCB4IFmLIZM-B4zo3xpR-6ZjXBLzLz7psfC0sT5TAn1qGkZ_dAhf3GbMoujum9DsL3cfOfYd53gH-mwxcY6a4EFV_h-4EDlBWXYo-Q44d4S3U9qqlRIpt1aybckIvmMdB5N9x45_hBVHvzBARTB8GY-6dbvAlecpBVf67T_iaVewvw-Pkq4Prz12FkT7cyfEvWFVSmJUAmsWZH40Wb6bv3KL0P8kqdN90x6HT2fukMl6EC6JB2ZRBVpG-qzrmk5weblk1APKcnRyrHAZlxVk9d6511cQQpkpkTXzGOvVbATQTEjpxqFGUkPlpcQT67dfUyFJthqhHC_zD4XqQ
+
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+              action: keep
+              regex: true
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+              action: replace
+              target_label: __metrics_path__
+              regex: (.+)
+            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              action: replace
+              regex: ([^:]+)(?::\d+)?;(\d+)
+              replacement: $1:$2
+              target_label: __address__
+            - action: labelmap
+              regex: __meta_kubernetes_pod_label_(.+)
+            - source_labels: [__meta_kubernetes_namespace]
+              action: replace
+              target_label: kubernetes_namespace
+            - source_labels: [__meta_kubernetes_pod_label_component]
+              action: replace
+              target_label: job
+            - source_labels: [__meta_kubernetes_pod_name]
+              action: replace
+              target_label: kubernetes_pod_name
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"prometheus.yml":"global:\n    scrape_interval: 15s\nscrape_configs:\n  - job_name: 'prometheus'\n    static_configs:\n      - targets: ['localhost:9090']\n  - job_name: 'kubernetes-pods'\n    kubernetes_sd_configs:\n      - role: pod\n  - job_name: kafkaesque-service\n    scrape_interval: 30s\n    scrape_timeout: 10s\n    metrics_path: /pulsarmetrics\n    scheme: https\n    static_configs:\n    - targets:\n      - uscentral1.azure.kafkaesque.io:8964\n    bearer_token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtZXJpdC10aGVkYXRhd29ya3MtY29tLWNsaWVudC01ZWIyZGZkYjYyMjQxIn0.AExoesCB4IFmLIZM-B4zo3xpR-6ZjXBLzLz7psfC0sT5TAn1qGkZ_dAhf3GbMoujum9DsL3cfOfYd53gH-mwxcY6a4EFV_h-4EDlBWXYo-Q44d4S3U9qqlRIpt1aybckIvmMdB5N9x45_hBVHvzBARTB8GY-6dbvAlecpBVf67T_iaVewvw-Pkq4Prz12FkT7cyfEvWFVSmJUAmsWZH40Wb6bv3KL0P8kqdN90x6HT2fukMl6EC6JB2ZRBVpG-qzrmk5weblk1APKcnRyrHAZlxVk9d6511cQQpkpkTXzGOvVbATQTEjpxqFGUkPlpcQT67dfUyFJthqhHC_zD4XqQ\n\n    relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n        action: keep\n        regex: true\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]\n        action: replace\n        target_label: __metrics_path__\n        regex: (.+)\n      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]\n        action: replace\n        regex: ([^:]+)(?::\\d+)?;(\\d+)\n        replacement: $1:$2\n        target_label: __address__\n      - action: labelmap\n        regex: __meta_kubernetes_pod_label_(.+)\n      - source_labels: [__meta_kubernetes_namespace]\n        action: replace\n        target_label: kubernetes_namespace\n      - source_labels: [__meta_kubernetes_pod_label_component]\n        action: replace\n        target_label: job\n      - source_labels: [__meta_kubernetes_pod_name]\n        action: replace\n        target_label: kubernetes_pod_name\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"prometheus-config1","namespace":"dataworks"}}
+    creationTimestamp: "2020-08-19T06:28:31Z"
+    name: prometheus-config1
+    namespace: dataworks
+    resourceVersion: "103956"
+    selfLink: /api/v1/namespaces/dataworks/configmaps/prometheus-config1
+    uid: 9a76befe-d32c-477b-a9f7-3e98fddd6a10
+- apiVersion: v1
+  data:
+    "8100": dataworks/forward-proxy:8100
+    "8101": dataworks/forward-proxy:8101
+    "8102": dataworks/forward-proxy:8102
+    "8103": dataworks/forward-proxy:8103
+    "8104": dataworks/forward-proxy:8104
+    "8105": dataworks/forward-proxy:8105
+    "8106": dataworks/forward-proxy:8106
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"8100":"dataworks/forward-proxy:8100","8101":"dataworks/forward-proxy:8101","8102":"dataworks/forward-proxy:8102","8103":"dataworks/forward-proxy:8103","8104":"dataworks/forward-proxy:8104","8105":"dataworks/forward-proxy:8105","8106":"dataworks/forward-proxy:8106"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"config-forward-proxy","namespace":"ingress-nginx"}}
+    creationTimestamp: "2020-08-19T09:55:24Z"
+    name: config-forward-proxy
+    namespace: ingress-nginx
+    resourceVersion: "124904"
+    selfLink: /api/v1/namespaces/ingress-nginx/configmaps/config-forward-proxy
+    uid: 686380b1-656b-46e1-b7ef-10542959ef53
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"ingress-nginx-controller-6bc48cf7bd-msprl","leaseDurationSeconds":30,"acquireTime":"2021-02-23T13:30:40Z","renewTime":"2021-06-30T14:47:40Z","leaderTransitions":5}'
+    creationTimestamp: "2020-08-19T09:19:07Z"
+    name: ingress-controller-leader-nginx
+    namespace: ingress-nginx
+    resourceVersion: "88246495"
+    selfLink: /api/v1/namespaces/ingress-nginx/configmaps/ingress-controller-leader-nginx
+    uid: 7100df11-ecc7-4847-ad3c-2c52b7777200
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: ingress-nginx
+      meta.helm.sh/release-namespace: ingress-nginx
+    creationTimestamp: "2020-08-19T09:18:49Z"
+    labels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: ingress-nginx
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/version: 0.34.1
+      helm.sh/chart: ingress-nginx-2.11.3
+    name: ingress-nginx-controller
+    namespace: ingress-nginx
+    resourceVersion: "118494"
+    selfLink: /api/v1/namespaces/ingress-nginx/configmaps/ingress-nginx-controller
+    uid: 3930d0c5-be88-401b-a325-ff6241f952d7
+- apiVersion: v1
+  data:
+    ip-masq-agent: |-
+      nonMasqueradeCIDRs:
+        - 10.0.0.0/8
+        - 10.240.0.0/16
+        - 10.0.0.0/16
+      masqLinkLocal: true
+      resyncInterval: 60s
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2020-08-18T13:53:05Z"
+    labels:
+      addonmanager.kubernetes.io/mode: EnsureExists
+      component: azure-ip-masq-agent
+      kubernetes.io/cluster-service: "true"
+    name: azure-ip-masq-agent-config
+    namespace: kube-system
+    resourceVersion: "264"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/azure-ip-masq-agent-config
+    uid: 2a78905e-1f5c-4314-94e9-12e2052ddd40
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"cert-manager-cainjector-6644dc4975-bb7p8_9798b9ee-e3fb-4a64-b5b5-9cf276d88f2d","leaseDurationSeconds":15,"acquireTime":"2021-06-29T19:48:11Z","renewTime":"2021-06-30T14:47:40Z","leaderTransitions":70}'
+    creationTimestamp: "2020-08-19T09:24:03Z"
+    name: cert-manager-cainjector-leader-election
+    namespace: kube-system
+    resourceVersion: "88246494"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/cert-manager-cainjector-leader-election
+    uid: 4ae82c88-70a9-4a6f-97f3-9bc5a0439d42
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"cert-manager-cainjector-6644dc4975-bb7p8_54aad135-ec1f-45b1-b892-a43c98c095fa","leaseDurationSeconds":15,"acquireTime":"2021-06-29T19:48:11Z","renewTime":"2021-06-30T14:47:40Z","leaderTransitions":70}'
+    creationTimestamp: "2020-08-19T09:24:03Z"
+    name: cert-manager-cainjector-leader-election-core
+    namespace: kube-system
+    resourceVersion: "88246493"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/cert-manager-cainjector-leader-election-core
+    uid: 664548ef-ef48-442f-b795-0c78036804f4
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"cert-manager-7ddc5b4db-7mcdl-external-cert-manager-controller","leaseDurationSeconds":60,"acquireTime":"2021-03-06T12:12:05Z","renewTime":"2021-06-30T14:47:38Z","leaderTransitions":6}'
+    creationTimestamp: "2020-08-19T09:24:05Z"
+    name: cert-manager-controller
+    namespace: kube-system
+    resourceVersion: "88246476"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/cert-manager-controller
+    uid: ac5f508b-93a5-41fe-9591-c4017828cc79
+- apiVersion: v1
+  data:
+    status: |+
+      Cluster-autoscaler status at 2021-06-30 14:47:33.390779673 +0000 UTC:
+      Cluster-wide:
+        Health:      Healthy (ready=2 unready=1 notStarted=0 longNotStarted=0 registered=3 longUnregistered=0)
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+        ScaleUp:     NoActivity (ready=2 registered=3)
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+        ScaleDown:   NoCandidates (candidates=0)
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+
+      NodeGroups:
+        Name:        aks-nodepool-91939667-vmss
+        Health:      Healthy (ready=2 unready=0 notStarted=0 longNotStarted=0 registered=2 longUnregistered=0 cloudProviderTarget=2 (minSize=1, maxSize=3))
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+        ScaleUp:     NoActivity (ready=2 cloudProviderTarget=2)
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+        ScaleDown:   NoCandidates (candidates=0)
+                     LastProbeTime:      2021-06-30 14:47:33.388537272 +0000 UTC m=+317033.619484023
+                     LastTransitionTime: 2021-06-26 22:43:49.955090529 +0000 UTC m=+10.186037280
+
+  kind: ConfigMap
+  metadata:
+    annotations:
+      cluster-autoscaler.kubernetes.io/last-updated: 2021-06-30 14:47:33.390779673
+        +0000 UTC
+    creationTimestamp: "2021-06-26T22:43:50Z"
+    name: cluster-autoscaler-status
+    namespace: kube-system
+    resourceVersion: "88246461"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/cluster-autoscaler-status
+    uid: ce139dd2-0a8a-482b-8610-f435250c1541
+- apiVersion: v1
+  data:
+    Corefile: |
+      .:53 {
+          errors
+          ready
+          health
+          kubernetes cluster.local in-addr.arpa ip6.arpa {
+            pods insecure
+            fallthrough in-addr.arpa ip6.arpa
+          }
+          prometheus :9153
+          forward . /etc/resolv.conf
+          cache 30
+          loop
+          reload
+          loadbalance
+          import custom/*.override
+      }
+      import custom/*.server
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"Corefile":".:53 {\n    errors\n    ready\n    health\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n      pods insecure\n      fallthrough in-addr.arpa ip6.arpa\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf\n    cache 30\n    loop\n    reload\n    loadbalance\n    import custom/*.override\n}\nimport custom/*.server\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"kube-dns","kubernetes.io/cluster-service":"true"},"name":"coredns","namespace":"kube-system"}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: kube-dns
+      kubernetes.io/cluster-service: "true"
+    name: coredns
+    namespace: kube-system
+    resourceVersion: "28406617"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/coredns
+    uid: 0045556c-a3c9-4005-a792-3859848834f7
+- apiVersion: v1
+  data:
+    ladder: '{"coresToReplicas":[[1,2],[512,3],[1024,4],[2048,5]],"nodesToReplicas":[[1,2],[8,3],[16,4],[32,5]]}'
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2020-08-18T13:55:01Z"
+    name: coredns-autoscaler
+    namespace: kube-system
+    resourceVersion: "891"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/coredns-autoscaler
+    uid: d8176166-b76e-4eab-895a-e62565599167
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2020-08-18T13:53:05Z"
+    labels:
+      addonmanager.kubernetes.io/mode: EnsureExists
+      k8s-app: kube-dns
+      kubernetes.io/cluster-service: "true"
+    name: coredns-custom
+    namespace: kube-system
+    resourceVersion: "265"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/coredns-custom
+    uid: 2f839a92-759d-48f1-acb2-4277de7e28d6
+- apiVersion: v1
+  data:
+    client-ca-file: |
+      -----BEGIN CERTIFICATE-----
+      MIIEyjCCArKgAwIBAgIRAPBtVUYND6GFiZw0KoWhe34wDQYJKoZIhvcNAQELBQAw
+      DTELMAkGA1UEAxMCY2EwIBcNMjAwODE4MTM0MTU4WhgPMjA1MDA4MTgxMzUxNTha
+      MA0xCzAJBgNVBAMTAmNhMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA
+      tex8z/yVirRPbOcQn3BIMhU+zWQPTE2hqkSNCokjZyv5sOjoMu0gINvCfjGn0sK9
+      1gvpE7yteIh8yzMjh2wNLhnrakv38m8XmjELgT3fZmbr81/iGHwjk+DyrivsDCSE
+      aF//sxoew0bwsxCMRhd+D920K+marizvDUMSEXplhwIB34m+dwLyJHtEyKsSukjH
+      eG0BKpaVLLkq6zSjzVSylEu8CHmS/p35zdG9w8MJVS7y0gIgOhXvNxqXXwffnOPj
+      pFHVfN3BKsuUYwtiK28hcK06b9jBhIV7EQTgYvPfu9cMUpvNw+DO7Vviy/w55Ryq
+      ZUYjjXbpgnflH/vUv84cRXDXbMzJzB3JIkp0tGWFkDc0RTv2xY2djW+LcJeoJkAo
+      iX1uJkxA2BQbHdIGGcpCnA8M37VCpAehMnTnOWGKxRZdUO5zTyGB9bgtGP6jRp46
+      +fmg+orVfV6Gsf2+uadPodepIKkOKkNMpXHyiAU7Oo8tXBy5NVOXiNdB5KELOFW0
+      Blg5w1D51/swQwtdQrLTUx/cjUK0Ec5Z9lLaXbUMd5uLJwKL0lZCoXEHP1jhQXm9
+      CZMNz39Zxggm3gszxbAN9+1gg6AT522xRvWU+xEslikx3AoN8ljhTnQR4ggyTkUK
+      Q0xFBshsTyjsbiivgl0ioLTnqt/KbI58sto0aLT9gO0CAwEAAaMjMCEwDgYDVR0P
+      AQH/BAQDAgKkMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAH/M
+      Ss+ukp/RDCwT4FB71Eky30MOBin3wsN09aUVpEm0afdMNTx2QBZZ+uQ7rXOtdsof
+      YiwP6TI/VAxD/hcmQSZ/WEQ+86eEv4haZjx3L4X7mNZz5YdJI70e2Fy0ArihZvej
+      Ujx4L9Wfwpo1ZPPR0U3uDQrwDlC7jJWRbLnLXn1djLg4UDtj7NpxX8KnGF+7+ZR9
+      zjpcJILI8z02w1dzkYJpT3DQzIVQHEvQHShvuh2fea+WadnVu4Cb9Gyt7oteqhiF
+      OHB4Dk5iKH7HwdZcNJxLNT3U998cIbh4gTyOPXP61MeBlEEfn7ou7uKgLXCwVUip
+      W/sw8k3XHvGopwub6UdK4cm5727iBKpjhSgKKj5HjbOzN5N2g7pBPQ5Bq0gu0UoC
+      wtb2wLRc9Yw3VXjmtl3mqH4ehISt6Alua0vLFX+NOk/K3Qswk9uFQLAkhLoemWTt
+      puMl1u6yE49qRFHbyHWY9rKV9psl+lO2FccQuApX/vqdlNi6hOFhGtFhRpFq4Muy
+      ScTUpRQpTjodAIqZJrESMYjXshYmmCKNiVOYVdPD2m5Cf4wq14QRUFh5uJUed5PR
+      98lqNauM1dVEQDvQShucCFuvQovFUjdsyXZYaOOgIsg4lVC723mmJhTNcMLO2uug
+      hr+qA0WvlI+XSCecAxG+7GOr1AnmcJcgUfYBorUS
+      -----END CERTIFICATE-----
+    requestheader-allowed-names: '[]'
+    requestheader-client-ca-file: |
+      -----BEGIN CERTIFICATE-----
+      MIIE0jCCArqgAwIBAgIRAODLFcIZ+EqhihCz3+EoIOwwDQYJKoZIhvcNAQELBQAw
+      ETEPMA0GA1UEAxMGYWdnLWNhMCAXDTIwMDgxODEzNDE1OVoYDzIwNTAwODE4MTM1
+      MTU5WjARMQ8wDQYDVQQDEwZhZ2ctY2EwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+      ggIKAoICAQDOAh6n9sxDs1ikQdFaqdD+rIYZE1DRvdI/USwti3r99LPY2nYWRu6s
+      BWxAU5uZWqB8njsovg/88v3HvnP8F6XjhQE9fbdrIPrNPyPDwh17YjIr/ZRo9Xxw
+      ee9t8yifVegROCOHsSvuy+Xn2l3oDhZISsyTEKow6yCm9J5skkFcQBP/ssyLDWiQ
+      SCSDYfF2v+rHeoASKs5Ae6FmwYTxW2tpYH/G09LyWTZnalLs/0HltlUt3AqsaPLE
+      nRfx3hj6Z6alFipGUSU5x7jfhI6HL7g221dY7g0JjAP4MqpCPP6CUXliUzDielh/
+      j6lU1LjLlp5MB/PXQddPwAJdIBALWCkJWdl1Cn6wLK7LdymKLXvE0vTKbfivwKq0
+      1lNHEw+hDZBExJex5qCAcH49gDw2pL4x+8ILqm1tizzXjmoxja/Lx12NYcttPG+7
+      QzYKqlBPeTkW2A0Pg1VL+nHcZlMxFgdsShh8zGtckuYX5s/SISVZDzsiQnyMNMyY
+      lTbVktvKSaBfH8efolqhW7o4hmwTy4Iv1OCqdpDWYj0KKuK1fZMJ07scJBFSO4sS
+      1gFo+iLEh4AzKOk5pE6nqp7oGz+UDoW218RAHyI8jAH1xTWe9wgq86RI784V23m7
+      On3pVZ3005RxoHlotysc9oy/Uqq5CTStca8ZwQ6838H85TSwExN6WQIDAQABoyMw
+      ITAOBgNVHQ8BAf8EBAMCAqQwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsF
+      AAOCAgEARE2Fjc/TrtbZRJDc7ZvlpnIJ3UYlIu7A73oetl2tUXNNdFnZ4zgoBXin
+      N7SZiVkzqE8Qd0C2t7ZeLnqzQYgEZd+2P1qPuggeljbL+ETBQ26u2d8SWYK+9M8u
+      zua3ATa9J1lQGPabex++a8trlJLwv+Bcdr3jniS4F0560v5+RSgIAgNHTB5sIiH4
+      dZkejNAgLk0my42m/mkjJw6UDeBy3jiGg7OGcsusLeH1NZXNn63ouXSz4qKqd94J
+      3hVc3QOA1FNLs72PfI/PkbscXA1nons3PKbBl2KyOGbUBhnm0wSfAn9uDh1tmulM
+      vhk9MPyALvYfuJ/QG0HKP5/WKGaprsj3aCT10TkqpCmqlzi10gL7IN9t7mqjSPEe
+      HUR3P9eGnuNKww8iSVChJ/MnG63aZalPPrUWicwUpXIFmoVxreK5uNY+vV9aApzW
+      MWb27gLTzilBlN+V5zvThC1im+EOFl+AJzKH8Ld+Q++UOMkO904zWHGJJVc7rkWd
+      cODRTzpqIqWrKn78PBAcrn8DBhKn/GDmAO5cCwSrHrmjV2TJuq3tK+Nuw//DQNty
+      jMwrNkX5n6b9GMT9x3TblpnL3Oqwoi1rdnyxiGyNcaX5JO4dL4IreDfMVW0ZaX5a
+      o9QU4o30kNRxsRdJMqXu4kfqnlBCvABdz61Mb4PVZHv+nMnaRw8=
+      -----END CERTIFICATE-----
+    requestheader-extra-headers-prefix: '["X-Remote-Extra-"]'
+    requestheader-group-headers: '["X-Remote-Group"]'
+    requestheader-username-headers: '["X-Remote-User"]'
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2020-08-18T13:52:45Z"
+    name: extension-apiserver-authentication
+    namespace: kube-system
+    resourceVersion: "39"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/extension-apiserver-authentication
+    uid: 5fbe6d45-a855-4554-9a9e-9c3fb3b3d519
+- apiVersion: v1
+  data:
+    _global: '{"clusterName":"","itemsPerPage":10,"logsAutoRefreshTimeInterval":5,"resourceAutoRefreshTimeInterval":5}'
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2020-08-26T11:13:17Z"
+    name: kubernetes-dashboard-settings
+    namespace: kube-system
+    resourceVersion: "1948231"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/kubernetes-dashboard-settings
+    uid: 2a6ad447-4c4e-4ef7-b409-5f8a6bb8efcf
+- apiVersion: v1
+  data:
+    ccpEtag: ed2fb04c-c0b7-49d6-9593-44d9d12b58de
+    isSLA: "false"
+    lastUpgradeTime: "2021-06-18T05:56:29.657023465Z"
+    overlaymgrversionGoal: 'Version: v20210603.210609.1 - Branch: refs/heads/official/v20210603
+      - git SHA: 44b2092c30 - Build date / time: 2021-06-09T02:13:33Z'
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"ccpEtag":"ed2fb04c-c0b7-49d6-9593-44d9d12b58de","isSLA":"false","lastUpgradeTime":"2021-06-18T05:56:29.657023465Z","overlaymgrversionGoal":"Version: v20210603.210609.1 - Branch: refs/heads/official/v20210603 - git SHA: 44b2092c30 - Build date / time: 2021-06-09T02:13:33Z"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"overlay-upgrade"},"name":"overlay-upgrade-data","namespace":"kube-system"}}
+    creationTimestamp: "2021-05-06T05:07:43Z"
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: overlay-upgrade
+    name: overlay-upgrade-data
+    namespace: kube-system
+    resourceVersion: "84007614"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/overlay-upgrade-data
+    uid: 8db9782f-0601-4695-9506-10d35d5c5d37
+- apiVersion: v1
+  data:
+    kubeconfig: |
+      apiVersion: v1
+      kind: Config
+      clusters:
+      - cluster:
+          certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          server: https://dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io:443
+        name: default
+      contexts:
+      - context:
+          cluster: default
+          user: tunnelfront
+        name: default
+      current-context: default
+      preferences: {}
+      users:
+      - name: tunnelfront
+        user:
+          tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+          client-certificate: /etc/kubernetes/tunnelfront-tls/client.pem
+          client-key: /etc/kubernetes/tunnelfront-tls/client.key
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"kubeconfig":"apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n    server: https://dwprodus-dns-96b954c1.hcp.centralus.azmk8s.io:443\n  name: default\ncontexts:\n- context:\n    cluster: default\n    user: tunnelfront\n  name: default\ncurrent-context: default\npreferences: {}\nusers:\n- name: tunnelfront\n  user:\n    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token\n    client-certificate: /etc/kubernetes/tunnelfront-tls/client.pem\n    client-key: /etc/kubernetes/tunnelfront-tls/client.key\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"addonmanager.kubernetes.io/mode":"Reconcile","k8s-app":"tunnelfront","kubernetes.io/cluster-service":"true"},"name":"tunnelfront-kubecfg","namespace":"kube-system"}}
+    creationTimestamp: "2020-08-18T13:53:06Z"
+    labels:
+      addonmanager.kubernetes.io/mode: Reconcile
+      k8s-app: tunnelfront
+      kubernetes.io/cluster-service: "true"
+    name: tunnelfront-kubecfg
+    namespace: kube-system
+    resourceVersion: "6931286"
+    selfLink: /api/v1/namespaces/kube-system/configmaps/tunnelfront-kubecfg
+    uid: e2e6628d-569a-46a1-a92d-340692163a58
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
