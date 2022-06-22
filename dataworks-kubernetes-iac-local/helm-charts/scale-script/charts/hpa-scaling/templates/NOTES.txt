@@ -1,4 +1,0 @@
-1. Get the application URL by running these commands:
-This script will help in scaling up/down the HPAs available on the cluster.
-Set the 'min' and 'max' replicas of the HPAs available.
-If you want to add new HPA, then create a new file for the desired HPA in template directory of the helm chart.

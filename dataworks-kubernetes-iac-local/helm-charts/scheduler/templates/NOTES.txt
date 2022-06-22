@@ -1,1 +1,0 @@
-The Scheduler service has deployed
